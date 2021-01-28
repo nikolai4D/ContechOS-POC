@@ -1,4 +1,4 @@
-# contechos_app-client
+# ContechOS
 
 
 <h1 align="center">
