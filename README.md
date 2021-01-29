@@ -43,4 +43,4 @@ The levels are:
 
 ### License
 
-This project is licensed under GNU Affero General Public License v3.0  - see the <a href="https://github.com/nikolai4D/ContechOS//LICENSE.md" target="_blank">LICENSE.md</a> file for details.
+This project is licensed under GNU Affero General Public License v3.0  - see the <a href="https://github.com/nikolai4D/ContechOS/LICENSE.md" target="_blank">LICENSE.md</a> file for details.
