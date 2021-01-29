@@ -39,7 +39,7 @@ The levels are:
 - <a href="https://vuejs.org/" target="_blank">Vue.js</a>  \- Framework for building the front-end of application
 - <a href="https://d3js.org/" target="_blank">d3.js</a>  \- Library for building the graph visualization
 - <a href="https://nodejs.org/en/" target="_blank">Node.js</a> & <a href="https://expressjs.com/" target="_blank">Express.js</a>  \- For scripting on the server side
-- <a href="https://neo4j.com/" target="_blank">Neo4j</a>  \-  Data base
+- <a href="https://neo4j.com/" target="_blank">Neo4j</a>  \-  Database
 
 ### License
 
