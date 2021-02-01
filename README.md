@@ -14,7 +14,7 @@
 ## About The Project 🚀
 
 ### Purpose
-This application was developed to be used a __tool__, making it easier to __add data__ in a __graph__ and see its consequences, based on specific processes. It serves as a proof of concept for digitizing a renovation process.
+This application gives you the ability to __add data__ in a __graph__ and see its consequences, based on specific processes. It was developed as a proof of concept for digitizing a renovation process.
 
 ### Usage
 
