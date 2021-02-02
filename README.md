@@ -16,7 +16,7 @@
 ### Purpose
 This application gives you the ability to __add data__ in a __graph__ and see its consequences, based on specific processes. It was developed as a proof of concept for digitizing a renovation process.
 
-### Usage
+### How It Works
 
 1. Build __graphs__ on different levels.
 
