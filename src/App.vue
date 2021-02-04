@@ -2,7 +2,7 @@
   <v-app dark>
     <v-app-bar class="elevation-0" app to="/">
       <div class="d-flex align-center">
-        <v-toolbar-title class="blue--text" >ContechOS - ÖBO Proof of Concept</v-toolbar-title>
+        <v-toolbar-title class="blue--text" >ContechOS Proof of Concept</v-toolbar-title>
         <v-spacer></v-spacer>
       </div>
 
