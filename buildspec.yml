@@ -1,0 +1,24 @@
+version: 0.2
+
+env:
+  variables:
+    VUE_APP_APIURL: "https://api.contechos.org/"
+
+phases:
+  install:
+    commands:
+      - curl -sL https://deb.nodesource.com/setup_12.x | bash -
+      - apt install -y nodejs
+  pre_build:
+    commands:
+      - npm i
+  build:
+    commands: 
+      - npm i
+      - npm run build
+artifacts:
+    # IMPORTANT - Please verify your build output directory
+  files:
+    - '**/*'
+  discard-paths: no
+  base-directory: dist
