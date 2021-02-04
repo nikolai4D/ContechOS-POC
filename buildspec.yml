@@ -1,9 +1,5 @@
 version: 0.2
 
-env:
-  variables:
-    VUE_APP_APIURL: "https://api.contechos.org/"
-
 phases:
   install:
     commands:
