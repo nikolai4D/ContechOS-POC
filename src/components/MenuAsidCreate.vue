@@ -206,7 +206,7 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         if (this.objCreate.type == "create rel") {
-          if (this.createObj.rel.type != null) {
+          if (this.createObj.rel.type == null) {
             this.createObj.rel.type.value = this.createObj.rel.type.valueField;
           }
           // create rel
@@ -272,7 +272,7 @@ export default {
         else {
           if (
             this.selectedGraph == "Admin" &&
-            this.createObj.rel.type != null
+            this.createObj.rel.type == null
           ) {
             this.createObj.rel.type.value = this.createObj.rel.type.valueField;
           }
