@@ -85,7 +85,6 @@ export default {
         const l = this.loader;
         this[l] = false;
         this.loader = null;
-        // this.button.disabled = true
       }
     },
 
@@ -176,7 +175,6 @@ export default {
 
           this.button.disabled = true;
           this.$store.state.successful = "...";
-          // this.$store.dispatch("readNodes", "System");
           this.activeObj = {};
         }
 

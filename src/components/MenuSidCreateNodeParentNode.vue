@@ -7,14 +7,6 @@
       <v-list-item>
         <div>
           <v-list-item>
-            <!-- <v-select
-              v-if="$store.state.selectedGraph=='Information' || $store.state.selectedGraph=='Data'"
-              item-text="value"
-              item-value="valueId"
-              return-object
-              v-model="$store.state.label"
-              :items="$store.state.asid.root.node.parentNodes"
-            /> -->
             <v-select
               item-text="value"
               item-value="value"
@@ -31,7 +23,6 @@
 </template>
 
 <script>
-// import { mapState } from "vuex";
 
 export default {
   computed: {},

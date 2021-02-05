@@ -10,7 +10,6 @@
         </v-sheet>
       </div>
 
-      <!-- <v-text-field v-model="activeObj.title" :id="`obj-edit-${activeObj.id}`" /> -->
       <v-list-item-action>
         <v-btn icon>
           <v-icon @click="updateObject" color="grey lighten-1">mdi-check</v-icon>
@@ -155,14 +154,10 @@ export default {
 
       let oldLabel = oldLabels[0];
       this.activeObj["oldLabel"] = oldLabel;
-      console.log(this.activeObj, "active");
       this.$store.dispatch("updateAsidNode", this.activeObj);
-      // console.log
-      // }
 
       let newLabels = [this.activeObj.title, this.selectedGraph];
       this.activeObj["labels"] = newLabels;
-      console.log(this.activeObj, "active");
 
       this.$store.state.objEditingId = "";
     },
@@ -180,17 +175,6 @@ export default {
         });
       }
 
-      console.log(
-        this.activeObj,
-        {
-          node: {
-            id: this.activeObj.id,
-            childProps: this.$store.state.textFields
-          }
-        },
-        "childpropobject"
-      );
-
       this.$store.dispatch("updateAsidChildProp", {
         node: {
           id: this.activeObj.id,
@@ -198,10 +182,6 @@ export default {
         },
         selectedGraph: this.selectedGraph
       });
-      // this.$store.dispatch(
-      //   "getAsidRootConfig",
-      //   this.$store.state.selectedGraph
-      // );
 
       this.$store.state.textFields = [];
     },
@@ -209,27 +189,11 @@ export default {
     resetEdit() {
       this.$store.state.objEditingId = "";
     },
-    // add() {
-    //   let hello = this.asid.childProps.props.filter(function(el) {
-    //     return !this.activeObj.childProps.includes(el);
-    //   });
-    //   console.log("hello", hello);
-    //   this.$store.state.textFields.push({
-    //     label1: "Prop",
-    //     value1: "",
-    //     label2: "DataType",
-    //     value2: ""
-    //   });
-    // },
+
     remove(index) {
       this.$store.state.textFields.splice(index, 1);
     },
     getItems() {
-      let hello = this.asid.childProps.props.filter(function(el) {
-        return !this.activeObj.childProps.includes(el);
-      });
-      console.log("hello", hello);
-      // return hello
       return this.asid.childProps.props;
     }
   }

@@ -28,8 +28,6 @@
             />
           </v-list-item>
         </div>
-
-        <!-- <v-btn @click="addFind">click</v-btn> -->
       </v-list-item>
     </v-sheet>
   </div>
@@ -45,9 +43,6 @@ export default {
   watch: {
     aLabel: function() {
       this.$store.state.label = this.aLabel;
-    },
-    done: function() {
-      console.log("mounted", this.$store.state.asid);
     }
   },
   computed: {
@@ -58,14 +53,10 @@ export default {
       "setConfigConfig",
       "label",
       "asid",
-      "done",
     ])
   },
 
-  methods: {
-    addFind: function() {
-      this.finds.push({ value: "" });
-    },
+  methods: { 
     checkInput(item, $event) {
       if (this.$store.state.selectedGraph == "Admin") {
         this.$store.state.propsToChange.map(obj => {
@@ -79,7 +70,6 @@ export default {
             obj.value = $event;
           }
         });
-        console.log("check", this.$store.state.propsToShow);
       }
     }
   }

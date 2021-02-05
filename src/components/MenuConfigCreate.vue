@@ -163,7 +163,6 @@ export default {
         const l = this.loader;
         this[l] = false;
         this.loader = null;
-        // this.button.disabled = true
       }
     },
 
@@ -208,39 +207,9 @@ export default {
     }
   },
   async mounted() {
-    this.createNodeConfig();
     await this.$store.dispatch("getConfigDataTypes");
   },
   methods: {
-    async createNodeConfig() {
-      // await this.$store.dispatch("getSystemConfig");
-      // this.createObj.node.props = this.systemConfig.props;
-    },
-    add() {
-      this.textFields.push({
-        key: "",
-        value: ""
-      });
-      this.textFields.push({
-        key: "",
-        value: ""
-      });
-    },
-
-    remove(index) {
-      this.textFields.splice(index, 1);
-    },
-
-    addRel() {
-      this.textFieldsRel.push({
-        key: "",
-        value: ""
-      });
-    },
-
-    removeRel(index) {
-      this.textFieldsRel.splice(index, 1);
-    },
 
     cancel() {
       this.$store.state.successful = null;
