@@ -11,7 +11,7 @@
         <div>
           <v-list-item>{{selectedGraph}}</v-list-item>
           <v-list-item>
-            <v-text-field v-model="activeObj.title" />
+            <v-text-field v-model="activeObj.title" :rules="[v => !!v || 'Please fill in the field.']" required/>
           </v-list-item>
         </div>
       </v-list-item>

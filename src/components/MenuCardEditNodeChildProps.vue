@@ -3,8 +3,8 @@
     <v-list-item>
       <v-list-item-subtitle>Child Properties</v-list-item-subtitle>
     </v-list-item>
-    <v-list-item dense v-for="item in activeObj.childProps" :key="item.keyId">
-      <v-text-field v-model="item.key" label="Key" />
+    <v-list-item dense v-for="item in activeObj.childProps" :key="item.keyId" >
+      <v-text-field v-model="item.key" label="Key" :rules="[v => !!v || 'Please fill in the field.']" required/>
     </v-list-item>
     
   </v-sheet>

@@ -8,7 +8,7 @@
         <v-list-item>
           <div>
             <v-list-item v-for="(item,i) in $store.state.propsToAdd.rels" :key="i">
-              <v-select item-value="id" item-text="value" :items=" $store.state.propsToAdd.rels"></v-select>
+              <v-select item-value="id" item-text="value" :items=" $store.state.propsToAdd.rels" :rules="[v => !!v || 'Select an option, please.']" required></v-select>
             </v-list-item>
           </div>
         </v-list-item>

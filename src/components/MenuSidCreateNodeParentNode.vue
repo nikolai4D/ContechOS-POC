@@ -14,6 +14,7 @@
               @change="checkInput"
               v-model="$store.state.propsToAdd"
               :items="$store.state.asid.root.node.parentNodes"
+              :rules="[v => !!v || 'Select an option, please.']" required
             />
           </v-list-item>
         </div>

@@ -1,14 +1,26 @@
 <template>
   <div>
     <v-list-item>
-      <v-text-field label="Rel"  v-model="$store.state.propsToAdd.parentRel"
-        v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin'"></v-text-field>
-
-      <v-text-field v-else label="Rel" v-model="$store.state.createObj.rel.type"></v-text-field>
-    </v-list-item>
-    <v-list-item>
+      <v-text-field
+        label="Rel"
+        v-model="$store.state.propsToAdd.parentRel"
+        v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin'"
+        :rules="[v => !!v || 'Please fill in the field.']"
+        required
+      ></v-text-field>
 
       <v-text-field
+        v-else
+        label="Rel"
+        v-model="$store.state.createObj.rel.type"
+        :rules="[v => !!v || 'Please fill in the field.']"
+        required
+      ></v-text-field>
+    </v-list-item>
+    <v-list-item>
+      <v-text-field
+        :rules="[v => !!v || 'Please fill in the field.']"
+        required
         v-model="$store.state.createObj.rel.type.valueField"
         v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin' && $store.state.createObj.rel.type != null && $store.state.createObj.rel.type.value == ''"
       ></v-text-field>

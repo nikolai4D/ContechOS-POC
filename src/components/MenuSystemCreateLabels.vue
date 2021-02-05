@@ -9,7 +9,7 @@
           <v-list-item>
             <div>
               <v-list-item-content>{{$store.state.selectedGraph}}</v-list-item-content>
-              <v-text-field v-model="$store.state.label" label="Label" />
+              <v-text-field v-model="$store.state.label" label="Label" :rules="[v => !!v || 'Please fill in the field.']" required/>
             </div>
           </v-list-item>
         </div>

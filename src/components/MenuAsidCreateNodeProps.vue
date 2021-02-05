@@ -13,6 +13,7 @@
               @input="checkInput(item, $event)"
               :value="item.value"
               :label="item.key"
+              :rules="[v => !!v || 'Please fill in the field.']" required
             />
           </v-list-item>
         </div>
@@ -25,6 +26,7 @@
               @input="checkInput(item, $event)"
               :value="item.value"
               :label="item.key"
+              :rules="[v => !!v || 'Please fill in the field.']" required
             />
           </v-list-item>
         </div>
