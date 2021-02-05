@@ -181,6 +181,7 @@ export default new Vuex.Store({
       ],
     },
   },
+
   mutations: {
     SET_USER_REG_SENT(state, userRegSent) {
       state.userRegSent = userRegSent;
@@ -196,16 +197,6 @@ export default new Vuex.Store({
     },
     SET_TOKEN_VALIDATION(state, token) {
       state.tokenValid = token;
-    },
-    SET_NODES_SYSTEM(state, nodes) {
-      state.graph.nodes = nodes;
-
-      state.graphString = JSON.stringify(state.graph);
-    },
-
-    SET_RELS_SYSTEM(state, links) {
-      state.graph.links = links;
-      state.graphString = JSON.stringify(state.graph);
     },
 
     SET_NODES_CONFIG(state, obj) {
@@ -260,6 +251,7 @@ export default new Vuex.Store({
       state.graph.nodes = nodes;
       state.graphString = JSON.stringify(state.graph);
     },
+
     DELETE_RELS(state, node) {
       state.deletedRel = state.graph.links.filter(
         (v) => v.source.id == node
@@ -269,52 +261,13 @@ export default new Vuex.Store({
       state.graph.links = links;
       state.graphString = JSON.stringify(state.graph);
     },
+
     EDIT_NODE(state, node) {
       state.graph.nodes.forEach((v) => {
         if (v.id == node.id) {
           v = node;
         }
       });
-    },
-    EDIT_REL(state, rel) {
-      state.graph.rels.forEach((v) => {
-        if (v.id == rel.id) {
-          v = rel;
-        }
-      });
-    },
-    ADD_NODE(state) {
-      // let nodes = state.graph.nodes.concat(node);
-      // state.graph.nodes = nodes;
-      state.successful = true;
-    },
-    ADD_REL(state) {
-      // let rels = state.graph.rels.concat(rel);
-      // state.graph.rels = rels;
-      state.successful = true;
-    },
-    ADD_NODE_SYSTEM(state, node) {
-      let nodes = state.graph.nodes.concat(node);
-
-      state.graph.nodes = nodes;
-      state.graphString = JSON.stringify(state.graph);
-
-      state.successful = true;
-    },
-    ADD_REL_SYSTEM(state, link) {
-      if (state.graph.links.length > 0) {
-        let links = state.graph.links.concat(link);
-        state.graph.links = links;
-      } else {
-        state.graph.links = link;
-      }
-      state.graphString = JSON.stringify(state.graph);
-
-      state.successful = true;
-    },
-
-    ADD_NODE_REL(state) {
-      state.successful = true;
     },
 
     CONSOLE(state) {
@@ -428,80 +381,6 @@ export default new Vuex.Store({
 
     // Getting data to D3
 
-    async readNodeParents({ commit }, nodeType) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: {
-            nodeType,
-          },
-          url: process.env.VUE_APP_APIURL + "readNodeParents",
-        };
-        let apiResponse = await axios(options);
-        // console.log(apiResponse, "doubleclicked");
-        commit("SET_NODES_SYSTEM", apiResponse.data.nodes);
-      } catch (error) {
-        console.error(error.response.data.message);
-      }
-    },
-
-    async readNodeChildren({ commit }, node) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: {
-            id: node.id,
-          },
-          url: process.env.VUE_APP_APIURL + "readNodeChildren",
-        };
-        let apiResponse = await axios(options);
-        // console.log(apiResponse, "doubleclicked");
-        commit("ADD_NODE_SYSTEM", apiResponse.data.nodes);
-        commit("ADD_REL_SYSTEM", apiResponse.data.edges);
-      } catch (error) {
-        console.error(error.response.data.message);
-      }
-    },
-
-    async readNodes({ commit }, nodeType) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: {
-            nodeType,
-          },
-          url: process.env.VUE_APP_APIURL + "readNodes",
-        };
-
-        let apiResponse = await axios(options);
-        let anArray = [];
-        if (nodeType == "System") {
-          await apiResponse.data.nodes.map((node) => {
-            node.props.map((obj) => {
-              if (obj.key == "title") {
-                anArray.push({
-                  id: node.id,
-                  labels: node.labels,
-                  props: node.props,
-                  title: obj.value,
-                });
-              }
-            });
-          });
-
-          let resultObject = { nodes: anArray, rels: apiResponse.data.rels };
-
-          commit("SET_NODES_SYSTEM", resultObject.nodes);
-          commit("SET_RELS_SYSTEM", resultObject.rels);
-        }
-      } catch (error) {
-        console.error(error.response.data.message);
-      }
-    },
-
     async readConfig({ commit }, configType) {
       try {
         const options = {
@@ -556,6 +435,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async readModel({ commit }, selectedGraph) {
       try {
@@ -613,6 +493,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async getConfigDataTypes({ commit }) {
       try {
         const options = {
@@ -628,6 +509,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async getConfigConfigRel({ commit }) {
       try {
@@ -646,6 +528,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async getConfigConfigNodes({ commit }, id) {
       try {
         const options = {
@@ -663,6 +546,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async getAdminConfigRels({ commit }, obj) {
       try {
         const options = {
@@ -679,6 +563,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async getAsidRootConfig({ commit }, selectedGraph) {
       try {
@@ -711,6 +596,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async getSystemRootConfig({ commit }, selectedGraph) {
       try {
         const options = {
@@ -741,6 +627,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async getSystemSub({ commit }) {
       try {
@@ -805,6 +692,25 @@ export default new Vuex.Store({
       }
     },
 
+
+    async getSystemConfig({ commit }) {
+      try {
+        const options = {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          url: process.env.VUE_APP_APIURL + "getSystemConfig",
+          data: "",
+        };
+
+        let apiResponse = await axios(options);
+
+        commit("SET_SYSTEMCONFIG", apiResponse.data);
+      } catch (error) {
+        console.error(error.response.data.message);
+      }
+    },
+    
+
     async deleteNode({ commit }, node) {
       try {
         const options = {
@@ -824,6 +730,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async deleteConfigNode({ commit }, node) {
       try {
@@ -845,6 +752,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async deleteAsidNode({ commit }, node) {
       try {
         const options = {
@@ -865,87 +773,6 @@ export default new Vuex.Store({
       }
     },
 
-    async updateNode({ commit }, node) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: {
-            id: node.id,
-            title: node.title,
-            type: node.type,
-          },
-          url: process.env.VUE_APP_APIURL + "updateNode",
-        };
-        let apiResponse = await axios(options);
-        let { title, type, updated } = apiResponse.data;
-        let data = {
-          id: JSON.stringify(apiResponse.data.id),
-          title,
-          type,
-          updated,
-        };
-        commit("EDIT_NODE", data);
-      } catch (error) {
-        console.error(error.response.data.message);
-      }
-    },
-
-    async updateRel({ commit }, rel) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: {
-            id: rel.id,
-            title: rel.title,
-          },
-          url: process.env.VUE_APP_APIURL + "updateRel",
-        };
-        let apiResponse = await axios(options);
-        let { title, updated } = apiResponse.data;
-        let data = { id: JSON.stringify(apiResponse.data.id), title, updated };
-        commit("EDIT_REL", data);
-      } catch (error) {
-        console.error(error.response.data.message);
-      }
-    },
-
-    async createNode({ commit }, node) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: node,
-          url: process.env.VUE_APP_APIURL + "createNode",
-        };
-        await axios(options);
-        console.log("Nod har nu skapats.");
-        this.dispatch("readNodes", "System");
-
-        commit("CONSOLE");
-      } catch (error) {
-        console.error(error.response.data.message);
-      }
-    },
-
-    async createRel({ commit }, node) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: node,
-          url: process.env.VUE_APP_APIURL + "createRel",
-        };
-        await axios(options);
-        console.log("Relation har nu skapats.");
-        this.dispatch("readNodes", "System");
-
-        commit("CONSOLE");
-      } catch (error) {
-        console.error(error.response.data.message);
-      }
-    },
 
     async createConfigNode({ commit }, node) {
       try {
@@ -965,6 +792,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async createConfigRel({ commit }, rel) {
       try {
         const options = {
@@ -982,6 +810,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async createAsidRel({ commit }, rel) {
       try {
@@ -1001,6 +830,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async createConfigNodeRel({ commit }, obj) {
       try {
         const options = {
@@ -1018,6 +848,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async createAdminConfigNode({ commit }, obj) {
       try {
@@ -1037,6 +868,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async createAdminConfigNodeRel({ commit }, obj) {
       try {
         const options = {
@@ -1054,6 +886,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async createRootNode({ commit }, obj) {
       obj = { obj: obj, selectedGraph: this.state.selectedGraph };
@@ -1074,6 +907,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async createSubNodeRel({ commit }, obj) {
       obj = { obj: obj, selectedGraph: this.state.selectedGraph };
       try {
@@ -1093,6 +927,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async createSystemRootNode({ commit }, obj) {
       obj = { obj: obj, selectedGraph: this.state.selectedGraph };
       try {
@@ -1111,6 +946,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async createSystemSubNodeRel({ commit }, obj) {
       obj = { obj: obj, selectedGraph: this.state.selectedGraph };
@@ -1152,7 +988,6 @@ export default new Vuex.Store({
     },
 
 
-
     async updateConfigNode({ commit }, node) {
       try {
         const options = {
@@ -1175,6 +1010,7 @@ export default new Vuex.Store({
       }
     },
 
+
     async updateAsidNode({ commit }, node) {
       try {
         const options = {
@@ -1193,6 +1029,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
+
 
     async updateAsidChildProp({ commit }, node) {
       try {
@@ -1215,43 +1052,10 @@ export default new Vuex.Store({
       }
     },
 
-    async createNodeRel({ commit }, obj) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: obj,
-          url: process.env.VUE_APP_APIURL + "createNodeRel",
-        };
-        await axios(options);
 
-        console.log("Nod med relation har nu skapats.");
-        // commit("ADD_NODE_REL");
-        this.dispatch("readNodes", "System");
 
-        commit("CONSOLE");
-      } catch (error) {
-        console.error(error.response.data.message);
-      }
-    },
-
-    async getSystemConfig({ commit }) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          url: process.env.VUE_APP_APIURL + "getSystemConfig",
-          data: "",
-        };
-
-        let apiResponse = await axios(options);
-
-        commit("SET_SYSTEMCONFIG", apiResponse.data);
-      } catch (error) {
-        console.error(error.response.data.message);
-      }
-    },
   },
+  
   getters: {
     async getConfigConfigNodes(state) {
       return await state.setConfigConfig.nodes;
