@@ -8,7 +8,7 @@
     </v-list-item>
     <v-divider></v-divider>
 
-    <MenuItems :getMenuItem="getMenuItem" />
+    <MenuItems :getMenuItem="getMenuItem"/>
 
     <div>
       <!-- Configmodell -->
@@ -151,7 +151,6 @@ export default {
         { title: "Data", icon: "mdi-vector-polyline" }
       ],
       items: [
-        { title: "System", icon: "mdi-vector-circle" },
         { title: "Information", icon: "mdi-graph-outline" },
         { title: "Data", icon: "mdi-vector-polyline" }
       ],
@@ -167,11 +166,12 @@ export default {
       "secondActiveObj",
       "selectConfigType"
     ]),
-    getMenuItem() {
-      if (this.switch1) {
-        return this.itemsConf;
-      } else {
-        return this.items;
+    getMenuItem(){
+      if (this.switch1){
+        return this.itemsConf
+      }
+      else{
+        return this.items
       }
     }
   },
@@ -203,7 +203,7 @@ export default {
 </script>
 
 <style scoped>
-.v-input--selection-controls {
+.v-input--selection-controls{
   margin-top: 0;
 }
 </style>
