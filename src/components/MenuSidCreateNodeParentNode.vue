@@ -7,6 +7,14 @@
       <v-list-item>
         <div>
           <v-list-item>
+            <!-- <v-select
+              v-if="$store.state.selectedGraph=='Information' || $store.state.selectedGraph=='Data'"
+              item-text="value"
+              item-value="valueId"
+              return-object
+              v-model="$store.state.label"
+              :items="$store.state.asid.root.node.parentNodes"
+            /> -->
             <v-select
               item-text="value"
               item-value="value"
@@ -14,7 +22,6 @@
               @change="checkInput"
               v-model="$store.state.propsToAdd"
               :items="$store.state.asid.root.node.parentNodes"
-              :rules="[v => !!v || 'Select an option, please.']" required
             />
           </v-list-item>
         </div>
@@ -24,6 +31,7 @@
 </template>
 
 <script>
+// import { mapState } from "vuex";
 
 export default {
   computed: {},

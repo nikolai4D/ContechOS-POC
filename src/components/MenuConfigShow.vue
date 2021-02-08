@@ -95,8 +95,11 @@ export default {
       }, 1);
     },
     updateObject() {
-      if (this.activeObj.source == null) {
+      if (this.activeObj.source != null) {
+        // this.$store.dispatch("updateRel", this.activeObj);
+      } else {
         this.$store.dispatch("updateConfigNode", this.activeObj);
+
       }
       this.$store.state.objEditingId = "";
     },

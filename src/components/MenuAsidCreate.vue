@@ -92,6 +92,7 @@ import MenuCardNodeActive from "./MenuCardNodeActive";
 import MenuCardNodeSecondActive from "./MenuCardNodeSecondActive";
 import MenuCardNodeNotActive from "./MenuCardNodeNotActive";
 
+// import MenuCardAdminConfigCreateNode from "./MenuCardAdminConfigCreateNode";
 import MenuCardAsidRel from "./MenuCardAsidRel";
 import MenuAsidCreateShowRels from "./MenuAsidCreateShowRels";
 
@@ -124,6 +125,7 @@ export default {
         const l = this.loader;
         this[l] = false;
         this.loader = null;
+        // this.button.disabled = true
       }
     },
 
@@ -133,6 +135,7 @@ export default {
   components: {
     MenuCardNodeActive,
     MenuCardNodeSecondActive,
+    // MenuCardAdminConfigCreateNode,
     MenuCardAsidRel,
     MenuCardNodeNotActive,
     MenuAsidCreateNodeLabels,
@@ -190,6 +193,13 @@ export default {
     await this.$store.dispatch("getConfigConfigRel");
   },
   methods: {
+    // async getNodeValues() {
+    //   this.$store.createObj = this.tempCreateObj;
+    //   await this.$store.dispatch(
+    //     "getConfigConfigNodes",
+    //     this.tempCreateObj.rel.type.id
+    //   );
+    // },
     cancel() {
       this.$store.state.successful = null;
     },
@@ -211,7 +221,10 @@ export default {
           ) {
             this.createObj.rel.type = this.$store.state.propsToAdd.parentRel;
           }
+          // console.log("createrel", this.createObj);
           this.$store.dispatch("createAsidRel", this.createObj.rel);
+          // this.$store.dispatch("createAsidRel", this.createObj.rel);
+
           this.$store.state.successful = "...";
           this.button.disabled = true;
           this.$store.state.setConfigConfig = {};
@@ -240,6 +253,7 @@ export default {
           this.createObj.node["childProps"] = this.$store.state.textFields;
           this.createObj["configNodeId"] = this.asid.root.node.configNodeId;
 
+          // console.log(this.createObj, "createObj");
           if (
             this.$store.state.selectedGraph != "Config" &&
             this.$store.state.selectedGraph != "Admin"
@@ -250,6 +264,7 @@ export default {
           }
           this.button.disabled = true;
           this.$store.state.successful = "...";
+          // this.$store.dispatch("readNodes", "System");
           this.activeObj = {};
         }
 
@@ -261,6 +276,13 @@ export default {
           ) {
             this.createObj.rel.type.value = this.createObj.rel.type.valueField;
           }
+          // const newObject = {
+          //   node: {
+          //     ...this.createObj.node,
+          //     labels: [this.selectConfigType, this.label]
+          //   },
+          //   rel: { type: this.createObj.rel.type.value }
+          // };
 
           if (this.objCreate.type == "create to") {
             this.createObj.node["labels"] = [
@@ -276,7 +298,12 @@ export default {
               this.$store.state.label,
               this.selectedGraph
             ];
+
             this.objCreate.toggle = 1;
+            // newObject.direction = "from";
+            // newObject.node.id = this.activeObj.id;
+            console.log("create to", this.newObject);
+            // this.$store.dispatch("createAdminConfigNodeRel", newObject);
 
             this.button.disabled = true;
             this.$store.state.successful = "...";
@@ -306,7 +333,7 @@ export default {
 
               this.createObj.rel[
                 "type"
-              ] = this.$store.state.propsToAdd.parentRel; 
+              ] = this.$store.state.propsToAdd.parentRel; // change this la $store.state.propsToAdd.parentRel
             }
             this.createObj.node["childProps"] = this.$store.state.textFields;
             this.createObj["configNodeId"] = this.asid.root.node.configNodeId;
@@ -320,16 +347,21 @@ export default {
             ];
 
             this.objCreate.toggle = 0;
+            // newObject.direction = "to";
+            // newObject.node.id = this.activeObj.id;
             if (this.selectedGraph == "Admin") {
               this.$store.dispatch("createSubNodeRel", this.createObj);
+              console.log("create from", this.createObj);
             } else if (
               this.selectedGraph == "Information" ||
               this.selectedGraph == "Data"
             ) {
-              this.$store.dispatch("createInfoDataSubNodeRel", this.createObj);
+                          this.$store.dispatch("createInfoDataSubNodeRel", this.createObj);
 
+              console.log("create from, info data", this.createObj);
             } else {
               this.$store.dispatch("createSystemSubNodeRel", this.createObj);
+              console.log("create from", this.createObj);
             }
 
             this.button.disabled = true;

@@ -22,7 +22,6 @@
               :item-text="getItems.text"
               label="Label"
               :key="getItems.id"
-              :rules="[v => !!v || 'Select an option, please.']" required
             ></v-select>
           </div>
         </v-list-item>
@@ -33,8 +32,8 @@
           <v-list-item-subtitle>Properties</v-list-item-subtitle>
         </v-list-item>
         <v-list-item>
-          <v-text-field :rules="[v => !!v || 'Please fill in the field.']" required v-model="createObj.node.props.key" label="Key" />:
-          <v-text-field :rules="[v => !!v || 'Please fill in the field.']" required v-model="createObj.node.props.value" label="Value" />
+          <v-text-field v-model="createObj.node.props.key" label="Key" />:
+          <v-text-field v-model="createObj.node.props.value" label="Value" />
         </v-list-item>
       </v-sheet>
     </v-sheet>

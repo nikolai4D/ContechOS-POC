@@ -21,7 +21,6 @@
               item-text="option"
               item-value="hello"
               v-model="$store.state.relsInfoData['rel_' + i]"
-              :rules="[v => !!v || 'Select an option, please']" required
             ></v-select>
           </v-list-item>
         </div>

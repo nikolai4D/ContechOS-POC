@@ -9,14 +9,12 @@
         label="Rel"
         v-model="$store.state.createObj.rel.type"
         @change="getNodeValues()"
-        :rules="[v => !!v || 'Select an option, please.']" required
       ></v-select>
     </v-list-item>
     <v-list-item>
       <v-text-field
         v-model="$store.state.createObj.rel.type.valueField"
         v-if="$store.state.createObj.rel.type != null && $store.state.createObj.rel.type.value == ''"
-        :rules="[v => !!v || 'Please fill in the field.']" required
       ></v-text-field>
       <v-list-item-action>
         <v-btn-toggle v-model="objCreate.toggle" mandatory>

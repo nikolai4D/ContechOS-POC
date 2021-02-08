@@ -24,18 +24,13 @@
               item-text="value"
               return-object
               v-model="textField.value1"
-              :rules="[v => !!v || 'Fill in or select an option, please.']"
-              required
             ></v-combobox>
-            <v-select
-              v-if="!asid.childProps.props.includes(textField.value1)"
+            <v-select v-if="!asid.childProps.props.includes(textField.value1)"
               label="DataType"
               :items="asid.childProps.dataTypes"
               item-value="id"
               item-text="value"
               v-model="textField.value2"
-              :rules="[v => !!v || 'Select an option, please.']"
-              required
             ></v-select>
           </div>
           <v-list-item-action>
@@ -45,6 +40,7 @@
           </v-list-item-action>
         </v-list-item>
       </div>
+
     </v-list-item>
   </v-sheet>
 </template>

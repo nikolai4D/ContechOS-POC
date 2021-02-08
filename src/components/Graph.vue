@@ -239,9 +239,17 @@ export default {
     },
     deep: true
   },
-
+  created() {
+    // window.addEventListener("resize", this.resized);
+  },
+  destroyed() {
+    // window.removeEventListener("resize", this.resized);
+  },
   methods: {
-
+    resized() {
+      // d3.selectAll("svg > *").remove();
+      // this.drawCanvas();
+    },
     async triggerEvent(value) {
       this.$store.state.propsToChange = [];
       d3.selectAll("circle").attr("stroke", null);
@@ -309,8 +317,6 @@ export default {
         this.$store.state.objCreate = { status: false };
       }
     },
-
-
     async deleteNode() {
       let response = confirm(
         `Är du säker på att du vill ta bort "${this.prep.title}"?`
@@ -326,12 +332,11 @@ export default {
         }
       }
     },
-
-
     async onClick(value) {
       this.$store.state.activeObj = this.prep;
 
       // Set active object
+      // this.onClickReset();
       if (this.$store.state.selectedGraph == "Admin") {
         await this.$store.dispatch(
           "getAsidRootConfig",
@@ -355,8 +360,13 @@ export default {
       this.$store.state.textFields = [];
     },
 
-    onClickReset() {
+    async onDoubleClick(value) {
+      // Get children for expansion
 
+      await this.$store.dispatch("readNodeChildren", value);
+    },
+
+    onClickReset() {
       // Set active object
       d3.selectAll("circle").attr("stroke", null);
       d3.selectAll("text").classed("textEdgeFocus", false);
@@ -437,6 +447,7 @@ export default {
             .forceLink()
             .id(d => d.id)
             .distance(200)
+          //  .gravity(.06)
         )
         .force("charge", d3.forceManyBody().strength(-2000))
         .force(
@@ -477,7 +488,7 @@ export default {
         );
 
       // Create nodes
-
+      // var that = this
       const node = svg
         .selectAll(null)
         .data(this.graph.nodes)
@@ -574,6 +585,13 @@ export default {
           .attr("y2", d => d.target.y);
 
         node.attr("cx", d => d.x).attr("cy", d => d.y);
+        //          .attr("transform", function (d) {
+        //        d.x = Math.max(this.margin.r, Math.min(width - this.margin.r, d.x));
+        //        d.y = Math.max(this.margin.r, Math.min(height - this.margin.r, d.y));
+        //        return "translate("+d.x+","+d.y+")";
+        //  });
+        // node.attr("cx", function(d) { return d.x = Math.max(this.margin.r, Math.min(width - this.margin.r, d.x)); })
+        //     .attr("cy", function(d) { return d.y = Math.max(this.margin.r, Math.min(height - this.margin.r, d.y)); });
 
         edgeLabels.attr("x", d => {
           return (d.source.x + d.target.x) / 2;
@@ -633,6 +651,7 @@ export default {
           }
         });
 
+        // d3.selectAll("text").classed("textEdgeFocus", false);
         d3.select("#node" + ref.$store.state.activeObj.id)
           .attr("stroke", "#c7e1ff")
           .attr("stroke-opacity", "0.8")
@@ -648,7 +667,7 @@ export default {
       // Directly after mouse was over
 
       function handleMouseOutNode() {
-
+        // d3.selectAll("text").classed("textEdgeFocus", false);
         d3.selectAll("circle").attr("stroke", null);
 
         d3.select("#node" + ref.$store.state.activeObj.id)
@@ -666,7 +685,7 @@ export default {
       // Directly after mouse was over rel
 
       function handleMouseOverRel() {
-
+        // d3.selectAll("text").classed("textEdgeFocus", false);
         d3.select("#node" + ref.$store.state.activeObj.id)
           .attr("stroke", "#c7e1ff")
           .attr("stroke-width", "7px");
@@ -678,8 +697,8 @@ export default {
       }
 
       function handleMouseOutRel() {
-
-          d3.select("#node" + ref.$store.state.activeObj.id)
+        // d3.selectAll("text").classed("textEdgeFocus", false);
+        d3.select("#node" + ref.$store.state.activeObj.id)
           .attr("stroke", "#c7e1ff")
           .attr("stroke-width", "7px");
 
@@ -716,17 +735,26 @@ export default {
 
       function dragended() {
         if (!event.active) simulation.alphaTarget(0);
-
+        // d.fx = null;
+        // d.fy = null;
         d3.select(this)
           .transition()
           .attr("r", ref.margin.r);
       }
 
+      // Dragging only possible inside window
+
+      // function clamp(x, lo, hi) {
+      //   return x < lo ? lo : x > hi ? hi : x;
+      // }
 
       // When nods is clicked
 
       function clickedNode(event, d) {
         if (event.defaultPrevented) return; // dragged
+        // delete d.fx; // remove fixed coordinates
+        // delete d.fy;
+        // d3.select(this).attr("stroke", null);
         simulation.alpha(1).restart();
         ref.onClick(d, "node");
 
@@ -734,14 +762,19 @@ export default {
         d3.selectAll("circle").attr("stroke", null);
         d3.select("#node" + d.id)
           .attr("stroke-opacity", "0.8")
+
           .attr("stroke", "#c7e1ff");
+
+        // .attr("stroke-width", "10px");
+        // d3.select("#node" + d.id).attr("stroke", "#c7e1ff")
 
         ref.prep = {};
       }
       // When nods is double clicked
 
-      function dblclick(event) {
+      function dblclick(event, d) {
         event.defaultPrevented;
+        ref.onDoubleClick(d, "node");
       }
 
       function clickedRel(event, d) {
@@ -757,18 +790,16 @@ export default {
       }
 
       function clickedSvg(d) {
-
         if (d.target.nodeName == "svg") {
           ref.onClickReset();
         }
       }
 
       function rightClick(d) {
-
-      ref.$store.state.label = '';
-      ref.$store.state.textFields = [];
-      ref.$store.state.propsToShow = [];
-      ref.$store.state.createObj = {
+                  ref.$store.state.label = '';
+          ref.$store.state.textFields = [];
+          ref.$store.state.propsToShow = [];
+          ref.$store.state.createObj = {
       rel: {},
       node: { props: { key: "", value: "" } },
       asid: [],
@@ -818,6 +849,11 @@ export default {
   },
   async mounted() {
     await this.drawCanvas();
+    // if (this.graph.nodes.length > 0) {
+    //   await this.drawCanvas();
+    // } else {
+    //   console.log("no data");
+    // }
   }
 };
 </script>
