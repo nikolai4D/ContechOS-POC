@@ -7,9 +7,8 @@
 </h1> 
 
 <h4 align="center">An application for building graphs on different levels. (Built with <a href="https://vuejs.org/" target="_blank">Vue.js</a> and <a href="https://d3js.org/" target="_blank">d3.js</a>.)</h4>
+<h6 align="center">The server can be found <a href="https://github.com/nikolai4D/ContechOS-server" target="_blank">here</a>.</h6>
 
-<br/>
-<br/>
 
 ## About The Project 🚀
 
