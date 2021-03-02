@@ -7,13 +7,25 @@
       <v-list-item>
         <v-list-item-subtitle>Labels</v-list-item-subtitle>
       </v-list-item>
-      <v-list-item v-for="item in activeObj.labels" :key="item.id">
-        <div>
-          <v-list-item-content>
-            <div>{{item}}</div>
-          </v-list-item-content>
-        </div>
-      </v-list-item>
+      <div v-for="item in activeObj.labels" :key="item.id">
+        <v-list-item v-if="item != selectedGraph">
+          <div>
+            <v-list-item-content>
+              <div>{{item}}</div>
+            </v-list-item-content>
+          </div>
+        </v-list-item>
+      </div>
+
+      <div v-for="item in activeObj.parent.labels" :key="item.id">
+        <v-list-item v-if="!['Admin', 'System', 'Information'].includes(item)">
+          <div>
+            <v-list-item-content>
+              <div>({{item}})</div>
+            </v-list-item-content>
+          </div>
+        </v-list-item>
+      </div>
     </v-sheet>
   </div>
 </template>
@@ -23,7 +35,7 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["activeObj"])
+    ...mapState(["activeObj", "selectedGraph"])
   }
 };
 </script>

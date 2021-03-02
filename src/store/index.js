@@ -578,16 +578,25 @@ export default new Vuex.Store({
             node.labels.map((obj) => {
               if (obj != selectedGraph) {
                 let group = {};
-                node.parent.labels.map((obj1) => {
-                  if (!arrayGraphs.includes(obj1)) {
-                    if (!groups.includes(obj1)) {
-                      groups.push(obj1);
-                      group = groups.length;
-                    } else {
-                      group = groups.indexOf(obj1) + 1;
+                if (!["Config", "Admin"].includes(selectedGraph)) {
+                  node.parent.labels.map((obj1) => {
+                    if (!arrayGraphs.includes(obj1)) {
+                      if (!groups.includes(obj1)) {
+                        groups.push(obj1);
+                        group = groups.length;
+                      } else {
+                        group = groups.indexOf(obj1) + 1;
+                      }
                     }
+                  });
+                } else {
+                  if (!groups.includes(obj)) {
+                    groups.push(obj);
+                    group = groups.length;
+                  } else {
+                    group = groups.indexOf(obj) + 1;
                   }
-                });
+                }
                 anArray.push({
                   id: node.id,
                   labels: node.labels,
@@ -607,6 +616,7 @@ export default new Vuex.Store({
             rels: apiResponse.data.rels,
             groups: groups.length,
           };
+          console.log(resultObject, "resultobject");
 
           this.state.groups = groups;
 
