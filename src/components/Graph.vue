@@ -333,6 +333,7 @@ export default {
       }
     },
     async onClick(value) {
+      console.log(value)
       this.$store.state.activeObj = this.prep;
 
       // Set active object

@@ -20,8 +20,7 @@ export default new Vuex.Store({
     objCreate: { status: false },
     createObj: {
       rel: {},
-      node: { props: { key: "", value: "" },       relss: []
-    },
+      node: { props: { key: "", value: "" }, relss: [] },
       asid: [],
     },
     successful: null,
@@ -39,7 +38,7 @@ export default new Vuex.Store({
     propsToChange: [],
     propsToShow: {},
     propsToAdd: {},
-    relsInfoData:{},
+    relsInfoData: {},
 
     groups: [],
     colors: {
@@ -567,6 +566,7 @@ export default new Vuex.Store({
           },
           url: process.env.VUE_APP_APIURL + "readModel",
         };
+        let arrayGraphs = ["Admin", "System", "Information"];
 
         let apiResponse = await axios(options);
         let anArray = [];
@@ -578,15 +578,20 @@ export default new Vuex.Store({
             node.labels.map((obj) => {
               if (obj != selectedGraph) {
                 let group = {};
-                if (!groups.includes(obj)) {
-                  groups.push(obj);
-                  group = groups.length;
-                } else {
-                  group = groups.indexOf(obj) + 1;
-                }
+                node.parent.labels.map((obj1) => {
+                  if (!arrayGraphs.includes(obj1)) {
+                    if (!groups.includes(obj1)) {
+                      groups.push(obj1);
+                      group = groups.length;
+                    } else {
+                      group = groups.indexOf(obj1) + 1;
+                    }
+                  }
+                });
                 anArray.push({
                   id: node.id,
                   labels: node.labels,
+                  parent: node.parent,
                   props: node.props,
                   title: obj,
                   group,
@@ -778,25 +783,25 @@ export default new Vuex.Store({
                 options: obj1.options,
                 relId: obj1.relId,
               });
-              test2.push(obj1.relId)
+              test2.push(obj1.relId);
             } else {
               test.map((obj2) => {
                 if (obj1.relId == obj2.relId) {
                   let list1 = obj2.options.concat(obj1.options);
-                  obj2.options= list1
+                  obj2.options = list1;
                 }
               });
             }
           });
-          obj.rels = test
+          obj.rels = test;
 
-          obj.rels.map(obj1 =>{
-            obj1.options.map(obj2=>{
-              obj2['relType']=obj1.relType
-            })
-          })
+          obj.rels.map((obj1) => {
+            obj1.options.map((obj2) => {
+              obj2["relType"] = obj1.relType;
+            });
+          });
         });
-        
+
         let newObject = { root: asidRoot, childProps: asidChildProps };
 
         commit("SET_ASID_ROOT_CONFIG", newObject);
@@ -1131,7 +1136,6 @@ export default new Vuex.Store({
       }
     },
 
-
     async createInfoDataSubNodeRel({ commit }, obj) {
       obj = { obj: obj, selectedGraph: this.state.selectedGraph };
       try {
@@ -1150,8 +1154,6 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
       }
     },
-
-
 
     async updateConfigNode({ commit }, node) {
       try {

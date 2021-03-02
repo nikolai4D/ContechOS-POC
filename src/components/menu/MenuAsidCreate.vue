@@ -207,7 +207,7 @@ export default {
       if (this.$refs.form.validate()) {
         if (this.objCreate.type == "create rel") {
           if (this.createObj.rel.type == null) {
-            this.createObj.rel.type.value = this.createObj.rel.type.valueField;
+            // this.createObj.rel.type.value = this.createObj.rel.type.valueField;
           }
           // create rel
 
@@ -221,8 +221,8 @@ export default {
           ) {
             this.createObj.rel.type = this.$store.state.propsToAdd.parentRel;
           }
-          // console.log("createrel", this.createObj);
-          this.$store.dispatch("createAsidRel", this.createObj.rel);
+          console.log("createrel", this.createObj);
+          // this.$store.dispatch("createAsidRel", this.createObj.rel);
           // this.$store.dispatch("createAsidRel", this.createObj.rel);
 
           this.$store.state.successful = "...";

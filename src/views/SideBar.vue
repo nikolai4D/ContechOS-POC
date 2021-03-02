@@ -48,12 +48,12 @@
 
 <script>
 import { mapState } from "vuex";
-import MenuItems from "../components/MenuItems";
-import MenuConfigShow from "../components/MenuConfigShow";
-import MenuConfigCreate from "../components/MenuConfigCreate";
-import MenuConfigAdminCreate from "../components/MenuConfigAdminCreate";
-import MenuAsidShow from "../components/MenuAsidShow";
-import MenuAsidCreate from "../components/MenuAsidCreate";
+import MenuItems from "../components/menu/MenuItems";
+import MenuConfigShow from "../components/menu/MenuConfigShow";
+import MenuConfigCreate from "../components/menu/MenuConfigCreate";
+import MenuConfigAdminCreate from "../components/menu/MenuConfigAdminCreate";
+import MenuAsidShow from "../components/menu/MenuAsidShow";
+import MenuAsidCreate from "../components/menu/MenuAsidCreate";
 
 export default {
   name: "SideBar",
