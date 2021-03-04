@@ -17,7 +17,7 @@
             <MenuCardNodeNotActive :secondAct="secondAct" />
           </div>
           <div v-else-if="objCreate.type == 'create rel' && secondAct != null">
-            <MenuCardAsidRel :relList="setConfigConfig" />
+            <MenuCardAsidRel :relList="setConfigConfig" :secondAct="secondAct"/>
             <MenuCardNodeSecondActive :secondAct="secondAct" />
           </div>
 
@@ -210,7 +210,10 @@ export default {
             // this.createObj.rel.type.value = this.createObj.rel.type.valueField;
           }
           // create rel
-
+          if (this.$store.state.propsToAdd.parentRel == null){
+            console.error('No relationship chosen.')
+            return 0
+          }
           this.objCreate.toggle = 1;
           this.createObj.rel.from = this.activeObj.id;
           this.createObj.rel.to = this.secondActiveObj.node.id;
@@ -220,16 +223,13 @@ export default {
             this.$store.state.selectedGraph != "Admin"
           ) {
             this.createObj.rel.type = this.$store.state.propsToAdd.parentRel;
-          this.$store.dispatch("getSidRel", this.activeObj.id);
-
           }
-          if (
-            this.$store.state.selectedGraph == "Admin"
-          ) {
+          // if (
+          //   this.$store.state.selectedGraph == "Admin"
+          // ) {
           this.$store.dispatch("createAsidRel", this.createObj.rel);
-          }
+          // }
 
-          console.log("createrel", this.createObj);
           // this.$store.dispatch("createAsidRel", this.createObj.rel);
 
           this.$store.state.successful = "...";

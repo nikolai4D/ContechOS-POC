@@ -39,7 +39,7 @@ export default new Vuex.Store({
     propsToShow: {},
     propsToAdd: {},
     relsInfoData: {},
-    validNodes:{},
+    validNodes:[],
 
     groups: [],
     colors: {

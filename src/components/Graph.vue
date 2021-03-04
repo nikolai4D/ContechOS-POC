@@ -313,7 +313,7 @@ export default {
         this.$store.state.activeObj = this.prep;
         this.$store.state.objCreate = { status: true, type: "create rel" };
         this.$store.state.secondActiveObj.status = true;
-                  await this.$store.dispatch("getSystemSub");
+          this.$store.dispatch("getSidRel", this.$store.state.activeObj.id);
 
       } else {
         this.$store.state.objCreate = { status: false };
