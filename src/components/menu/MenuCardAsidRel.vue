@@ -9,8 +9,9 @@
         <v-select
           :items="validN"
           label="Rels"
-        v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin'"
+        v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin' && this.objCreate.type == 'create rel'"
         v-model="$store.state.propsToAdd.parentRel"
+        
         required
         ></v-select>
 
