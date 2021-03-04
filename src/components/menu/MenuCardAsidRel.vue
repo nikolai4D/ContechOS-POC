@@ -16,7 +16,8 @@
         ></v-select>
 
         
-      <v-text-field v-else label="Rel" v-model="$store.state.createObj.rel.type"></v-text-field>
+      <v-text-field v-else label="Rel"        v-model="$store.state.propsToAdd.parentRel"
+></v-text-field>
     </v-list-item>
     <v-list-item>
       <v-text-field
