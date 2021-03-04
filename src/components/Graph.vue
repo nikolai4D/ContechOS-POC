@@ -190,6 +190,12 @@ export default {
               text: "Skapa: (Nod) <- (Ny)",
               icon: "mdi-ray-end-arrow"
             },
+
+            {
+              type: "create rel",
+              text: "Skapa: (Nod) -> (Bef)",
+              icon: "mdi-vector-line"
+            },
             {
               type: "update",
               text: "Redigera nod",
