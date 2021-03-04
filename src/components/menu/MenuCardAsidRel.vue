@@ -12,6 +12,8 @@
         v-model="$store.state.createObj.rel.type.valueField"
         v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin' && $store.state.createObj.rel.type != null && $store.state.createObj.rel.type.value == ''"
       ></v-text-field>
+<v-text>{{validNodes}}</v-text>
+
       <v-list-item-action>
         <v-btn-toggle v-model="objCreate.toggle" mandatory>
           <v-btn v-if="objCreate.type == 'create to' || objCreate.type == 'create rel' " small icon>
@@ -33,44 +35,13 @@ export default {
   watch: {},
   props: ["relList"],
   computed: {
-    ...mapState(["activeObj", "setConfigConfig", "objCreate"]),
-    getItems() {
-      if (this.objCreate.type == "create rel") {
-        return {
-          items: this.relList.rels,
-          value: "value",
-          text: "value",
-          id: "id",
-          object: false
-        };
-      } else if (
-        this.objCreate.type == "create to" ||
-        this.objCreate.type == "create from"
-      ) {
-        return {
-          items: this.setConfigConfig.rels,
-          value: "id",
-          text: "value",
-          id: "id",
-          object: true
-        };
-      } else {
-        return 0;
-      }
-    }
+    ...mapState(["activeObj", "setConfigConfig", "objCreate", "asid"]),
+    validNodes(){
+      return this.asid.root.node.parentNodes
+    },
   },
-  methods: {
-    async getNodeValues() {
-      if (
-        this.objCreate.type == "create to" ||
-        this.objCreate.type == "create from"
-      ) {
-        await this.$store.dispatch(
-          "getConfigConfigNodes",
-          this.$store.state.createObj.rel.type.id
-        );
-      }
-    }
-  }
+    methods:{
+
+  },
 };
 </script>

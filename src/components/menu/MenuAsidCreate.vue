@@ -220,9 +220,16 @@ export default {
             this.$store.state.selectedGraph != "Admin"
           ) {
             this.createObj.rel.type = this.$store.state.propsToAdd.parentRel;
+          this.$store.dispatch("getSidRel", this.activeObj.id);
+
           }
+          if (
+            this.$store.state.selectedGraph == "Admin"
+          ) {
+          this.$store.dispatch("createAsidRel", this.createObj.rel);
+          }
+
           console.log("createrel", this.createObj);
-          // this.$store.dispatch("createAsidRel", this.createObj.rel);
           // this.$store.dispatch("createAsidRel", this.createObj.rel);
 
           this.$store.state.successful = "...";

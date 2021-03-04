@@ -512,7 +512,7 @@ To test:
 
                     System:
                     
-                        Node: 
+                           Node: 
 
                             R-click:
     
@@ -530,28 +530,26 @@ To test:
                                             
                                             Rel: 
                                                 
-                                                - Textfield ("Rel"), will be overwritten when Parent Node chosen
-                                                - Arrow up
-
-
+                                                - Textfield ("Rel"), autogenerates after choosing Parent Node
+                                                - Arrow down
                                             
                                             (Ny) 
-                                            
+
                                                 Parent Node:
 
                                                     Dropdown:
-                                                    
-                                                        - 
-    
+
+                                                        - Based on Admin
+
                                                 Labels: 
                                                 
                                                     - Fixed (Page) 
                                                 
-                                                    - Textfield based on what property value the node "Label" has (ex nodeLabel in {key: nodeLabel}) in AdminConfig, that has the rel "HAS_LABEL" from node "LabelVal", with property {value: ''}
+                                                    - Textfield based on what property value the node "Label" has (ex nodeLabel in {key: nodeLabel}) in System Config, that has the rel "HAS_LABEL" from node "LabelVal", with property {value: ''}
                                                 
                                                 Properties: 
                                                 
-                                                    - Textfields based on what property value the node "Prop" has (ex title in {key: title}) in AdminConfig, that has the rel "TO_NODE" from node "Rel" that has rel "HAS_REL" from node "Node"
+                                                    - Textfields based on what property value in System Config + child properties the Parent Node has (ex title in {key: title}) in Admin, that has the rel "TO_NODE" from node "Rel" that has rel "HAS_REL" from node "Node"
 
                                                 Child Properties: 
 
@@ -563,8 +561,7 @@ To test:
 
                                             Check button:
 
-                                                - Validate Label textfield and Rel textfield not empty -> should create a node in graph
-
+                                                - Validate Label textfield not empty -> should create a node in graph
 
                                     Create -rel->:
     
@@ -669,18 +666,18 @@ To test:
                                                 Parent Node:
 
                                                     Dropdown:
-                                                    
-                                                        - 
+
+                                                        - Based on Admin root nodes, i.e. nodes that only has rels toward themselves, and are based on Admin Config node with property {key: root}
                                             
                                                 Labels: 
                                                 
                                                     - Fixed (Page) 
                                                 
-                                                    - Textfield based on what property value the node "Label" has (ex nodeLabel in {key: nodeLabel}) in AdminConfig, that has the rel "HAS_LABEL" from node "LabelVal", with property {value: ''}
+                                                    - Textfield based on what property value the node "Label" has (ex nodeLabel in {key: nodeLabel}) in Syste Config, that has the rel "HAS_LABEL" from node "LabelVal", with property {value: ''}
                                                 
                                                 Properties: 
                                                 
-                                                    - Textfields based on what property value the node "Prop" has (ex title in {key: title}) in AdminConfig, that has the rel "TO_NODE" from node "Rel" that has rel "HAS_REL" from node "Node"
+                                                    - Textfields based on what property value + child properties the Parent Node has (ex title in {key: title}) in SystemConfig, that has the rel "TO_NODE" from node "Rel" that has rel "HAS_REL" from node "Node"
 
                                                 Child Properties: 
 

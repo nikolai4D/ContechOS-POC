@@ -313,6 +313,8 @@ export default {
         this.$store.state.activeObj = this.prep;
         this.$store.state.objCreate = { status: true, type: "create rel" };
         this.$store.state.secondActiveObj.status = true;
+                  await this.$store.dispatch("getSystemSub");
+
       } else {
         this.$store.state.objCreate = { status: false };
       }
@@ -333,7 +335,6 @@ export default {
       }
     },
     async onClick(value) {
-      console.log(value)
       this.$store.state.activeObj = this.prep;
 
       // Set active object

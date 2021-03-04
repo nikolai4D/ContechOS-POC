@@ -39,6 +39,7 @@ export default new Vuex.Store({
     propsToShow: {},
     propsToAdd: {},
     relsInfoData: {},
+    validNodes:{},
 
     groups: [],
     colors: {
@@ -251,6 +252,11 @@ export default new Vuex.Store({
     SET_ASID_ROOT_CONFIG(state, data) {
       state.asid = data;
     },
+
+    SET_VALID_NODES(state, data) {
+      state.validNodes = data;
+    },
+
 
     DELETE_NODE(state, node) {
       state.deletedNode = state.graph.nodes.filter((v) => v.id == node)[0];
@@ -616,7 +622,6 @@ export default new Vuex.Store({
             rels: apiResponse.data.rels,
             groups: groups.length,
           };
-          console.log(resultObject, "resultobject");
 
           this.state.groups = groups;
 
@@ -813,8 +818,28 @@ export default new Vuex.Store({
         });
 
         let newObject = { root: asidRoot, childProps: asidChildProps };
-
+        console.log(newObject)
         commit("SET_ASID_ROOT_CONFIG", newObject);
+      } catch (error) {
+        console.error(error.response.data.message);
+      }
+    },
+
+    async getSidRel({ commit }) {
+      try {
+        const options = {
+          method: "POST",
+          data: {
+            id: await this.state.activeObj.id,
+          },
+          headers: { "content-type": "application/json" },
+          url: process.env.VUE_APP_APIURL + "getSidRel",
+        };
+
+        let apiResponse = await axios(options);
+        let validNodes = apiResponse.data;
+        console.log(validNodes)
+        commit("SET_VALID_NODES", validNodes);
       } catch (error) {
         console.error(error.response.data.message);
       }
