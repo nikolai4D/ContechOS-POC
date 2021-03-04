@@ -210,7 +210,8 @@ export default {
             // this.createObj.rel.type.value = this.createObj.rel.type.valueField;
           }
           // create rel
-          if (this.$store.state.propsToAdd.parentRel == null){
+          if (this.$store.state.selectedGraph != "Config" &&
+            this.$store.state.selectedGraph != "Admin" && this.$store.state.propsToAdd.parentRel == null){
             console.error('No relationship chosen.')
             return 0
           }
