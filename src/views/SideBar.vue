@@ -91,6 +91,7 @@ export default {
     },
     "$store.state.setConfigConfigString": async function() {
       this.secondAct = await this.$store.state.secondActiveObj.node.title;
+
       if (this.$store.state.objCreate.type == "create rel") {
         if (this.secondAct != null) {
           this.$store.dispatch("getAdminConfigRels", {
@@ -106,6 +107,8 @@ export default {
         this.secondAct == null;
       } else {
         this.secondAct = this.$store.state.secondActiveObj.node.title;
+      console.log(this.$store.state.secondActiveObj.node.parent, 'second parent')
+
 
         if (this.$store.state.objCreate.type == "create rel") {
           if (this.secondAct == null) {

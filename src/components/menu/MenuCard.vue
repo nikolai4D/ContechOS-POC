@@ -97,6 +97,8 @@ export default {
         this.secondAct == null;
       } else {
         this.secondAct = this.$store.state.secondActiveObj.node.title;
+        this.secondAct['parent'] = this.$store.state.secondActiveObj.node.parent;
+
 
         if (this.$store.state.objCreate.type == "create rel") {
           if (this.secondAct == null) {

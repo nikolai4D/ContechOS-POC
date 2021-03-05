@@ -362,6 +362,7 @@ export default {
 
       if (this.$store.state.secondActiveObj.status) {
         this.$store.state.secondActiveObj.node = value;
+        console.log(this.$store.state.secondActiveObj, 'second')
       } else {
         this.$store.state.activeObj = value;
       }
