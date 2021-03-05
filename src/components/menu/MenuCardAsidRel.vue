@@ -5,17 +5,21 @@
         label="Rel"
         v-model="$store.state.propsToAdd.parentRel"
         v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin'"
-      ></v-text-field> -->
-        <v-select
-          :items="validN"
-          label="Rels"
-        v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin' && this.objCreate.type == 'create rel'"
+      ></v-text-field>-->
+      <v-select
+        :items="validN"
+        label="Rels"
+        v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin' && this.objCreate.type == 'create rel' && validN.length > 0"
         v-model="$store.state.propsToAdd.parentRel"
-        
         required
-        ></v-select>
+      ></v-select>
 
-        
+      <v-text
+        v-else-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin' && this.objCreate.type == 'create rel' && validN.length == 0"
+        v-model="$store.state.propsToAdd.parentRel"
+      >
+        <h5>Finns inga relationer att välja</h5>
+      </v-text>
       <v-text-field v-else label="Rel" v-model="$store.state.propsToAdd.parentRel"></v-text-field>
     </v-list-item>
     <v-list-item>
@@ -23,7 +27,6 @@
         v-model="$store.state.createObj.rel.type.valueField"
         v-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin' && $store.state.createObj.rel.type != null && $store.state.createObj.rel.type.value == ''"
       ></v-text-field>
-
 
       <v-list-item-action>
         <v-btn-toggle v-model="objCreate.toggle" mandatory>
