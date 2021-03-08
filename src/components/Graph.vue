@@ -457,10 +457,12 @@ export default {
           //  .gravity(.06)
         )
         .force("charge", d3.forceManyBody().strength(-2000))
-        .force(
-          "center",
-          d3.forceCenter(width / 2 - width / 12, height / 2 - height / 8)
-        )
+        // .force(
+        //   "center",
+        //   d3.forceCenter(width / 2 - width / 12, height / 2 - height / 8)
+        // )
+         .force('collide',d3.forceCollide().radius(60).iterations(2))
+
         .force(
           "x",
           d3
@@ -759,8 +761,8 @@ export default {
 
       function clickedNode(event, d) {
         if (event.defaultPrevented) return; // dragged
-        // delete d.fx; // remove fixed coordinates
-        // delete d.fy;
+        delete d.fx; // remove fixed coordinates
+        delete d.fy;
         // d3.select(this).attr("stroke", null);
         simulation.alpha(1).restart();
         ref.onClick(d, "node");
