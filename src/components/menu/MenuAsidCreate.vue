@@ -14,7 +14,9 @@
             <MenuCardNodeActive />
           </div>
           <div v-if="activeObj.source">
-            <v-list-item><h5>Välj en nod (den valda är en relation)</h5></v-list-item>
+            <v-list-item>
+              <h5>Välj en nod (den valda är en relation)</h5>
+            </v-list-item>
           </div>
           <div v-else>
             <div v-if="objCreate.type == 'create rel' && secondAct == null">
@@ -65,7 +67,7 @@
               </v-sheet>
             </div>
 
-            <v-list-item v-else>
+            <v-list-item>
               <v-list-item-action>
                 <v-btn
                   :loading="loading3"
@@ -228,8 +230,7 @@ export default {
           this.createObj.rel.to = this.secondActiveObj.node.id;
 
           if (
-            this.$store.state.selectedGraph != "Config" &&
-            this.$store.state.selectedGraph != "Admin"
+            this.$store.state.selectedGraph != "Config"
           ) {
             this.createObj.rel.type = this.$store.state.propsToAdd.parentRel;
           }
@@ -286,19 +287,6 @@ export default {
 
         // create node and rel
         else {
-          if (
-            this.selectedGraph == "Admin" &&
-            this.createObj.rel.type == null
-          ) {
-            this.createObj.rel.type.value = this.createObj.rel.type.valueField;
-          }
-          // const newObject = {
-          //   node: {
-          //     ...this.createObj.node,
-          //     labels: [this.selectConfigType, this.label]
-          //   },
-          //   rel: { type: this.createObj.rel.type.value }
-          // };
 
           if (this.objCreate.type == "create to") {
             this.createObj.node["labels"] = [
@@ -316,8 +304,7 @@ export default {
             ];
 
             this.objCreate.toggle = 1;
-            // newObject.direction = "from";
-            // newObject.node.id = this.activeObj.id;
+
             console.log("create to", this.newObject);
             // this.$store.dispatch("createAdminConfigNodeRel", newObject);
 
@@ -345,11 +332,10 @@ export default {
               this.createObj[
                 "parentNodeId"
               ] = this.$store.state.propsToAdd.valueId;
-
-              this.createObj.rel[
-                "type"
-              ] = this.$store.state.propsToAdd.parentRel; // change this la $store.state.propsToAdd.parentRel
             }
+                          this.createObj.rel[
+                "type"
+              ] = this.$store.state.propsToAdd.parentRel; 
             this.createObj.node["childProps"] = this.$store.state.textFields;
             this.createObj["configNodeId"] = this.asid.root.node.configNodeId;
 

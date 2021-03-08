@@ -340,13 +340,15 @@ export default {
       }
     },
     async onClick(value) {
-      console.log(this.$store.state.objCreate)
-      
-      this.$store.state.propsToAdd=[];
-      this.$store.state.activeObj = this.prep;
+      this.$store.state.propsToAdd = [];
+      this.$store.state.textFields = [];
 
       // Set active object
-      // this.onClickReset();
+      if (this.$store.state.secondActiveObj.status) {
+        this.$store.state.secondActiveObj.node = value;
+      } else {
+        this.$store.state.activeObj = value;
+      }
 
       if (this.$store.state.selectedGraph == "Admin") {
         await this.$store.dispatch(
@@ -361,23 +363,14 @@ export default {
           "getSystemRootConfig",
           this.$store.state.selectedGraph
         );
-         if (this.$store.state.objCreate.type == 'create from'){
-                     await this.$store.dispatch("getSystemSub");
-
-         }
+        if (this.$store.state.objCreate.type == "create from") {
+          await this.$store.dispatch("getSystemSub");
+        }
       }
-
-      if (this.$store.state.secondActiveObj.status) {
-        this.$store.state.secondActiveObj.node = value;
-      } else {
-        this.$store.state.activeObj = value;
-      }
-      this.$store.state.textFields = [];
     },
 
     async onDoubleClick(value) {
       // Get children for expansion
-
       await this.$store.dispatch("readNodeChildren", value);
     },
 
