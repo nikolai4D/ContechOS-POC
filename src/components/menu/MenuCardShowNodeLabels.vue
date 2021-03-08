@@ -17,14 +17,16 @@
         </v-list-item>
       </div>
 
-      <div v-for="item in activeObj.parent.labels" :key="item.id">
-        <v-list-item v-if="!['Admin', 'System', 'Information'].includes(item)">
-          <div>
-            <v-list-item-content>
-              <div>({{item}})</div>
-            </v-list-item-content>
-          </div>
-        </v-list-item>
+      <div v-if="activeObj.parent">
+        <div v-for="item in activeObj.parent.labels" :key="item.id">
+          <v-list-item v-if="!['Admin', 'System', 'Information'].includes(item)">
+            <div>
+              <v-list-item-content>
+                <div>({{item}})</div>
+              </v-list-item-content>
+            </div>
+          </v-list-item>
+        </div>
       </div>
     </v-sheet>
   </div>
