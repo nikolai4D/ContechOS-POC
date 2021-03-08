@@ -340,10 +340,9 @@ export default {
       }
     },
     async onClick(value) {
-      console.log(this.$store.state.asid.root.node.parentNodes, 'parents');
-
-      this.$store.state.asid.root.node.parentNodes = [];
-      this.$store.state.propsToAdd.parentRel = ""
+      console.log(this.$store.state.objCreate)
+      
+      this.$store.state.propsToAdd=[];
       this.$store.state.activeObj = this.prep;
 
       // Set active object
@@ -362,15 +361,16 @@ export default {
           "getSystemRootConfig",
           this.$store.state.selectedGraph
         );
+         if (this.$store.state.objCreate.type == 'create from'){
+                     await this.$store.dispatch("getSystemSub");
+
+         }
       }
 
       if (this.$store.state.secondActiveObj.status) {
         this.$store.state.secondActiveObj.node = value;
       } else {
         this.$store.state.activeObj = value;
-        if (this.$store.state.objCreate.type == "create from") {
-          await this.$store.dispatch("getSystemSub");
-        }
       }
       this.$store.state.textFields = [];
     },
