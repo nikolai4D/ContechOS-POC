@@ -14,7 +14,7 @@
       <v-list-item v-if="!['Admin', 'System', 'Information'].includes(item)">
         <div>
           <v-list-item-content>
-            <div>({{item}})</div>
+             <v-list-item-title>({{item}})</v-list-item-title>
           </v-list-item-content>
         </div>
       </v-list-item>

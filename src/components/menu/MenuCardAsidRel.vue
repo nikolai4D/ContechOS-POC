@@ -17,7 +17,7 @@
       <v-text
         v-else-if="$store.state.selectedGraph != 'Config'  && $store.state.selectedGraph != 'Admin' && this.objCreate.type == 'create rel' && validN.length == 0"
         v-model="$store.state.propsToAdd.parentRel"
-      >
+      ><br/>
         <h5>Finns inga relationer att välja</h5>
       </v-text>
       <v-text-field v-else label="Rel" v-model="$store.state.propsToAdd.parentRel"></v-text-field>

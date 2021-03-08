@@ -42,6 +42,7 @@ export default {
   methods: {
     checkInput() {
       if (!this.checked) {
+        
         this.$store.state.propsToAdd.rels.map((obj, i) => {
           this.$store.state.relsInfoData["rel_" + i] = {};
         });

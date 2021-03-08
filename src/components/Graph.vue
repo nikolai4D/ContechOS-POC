@@ -319,8 +319,7 @@ export default {
         this.$store.state.activeObj = this.prep;
         this.$store.state.objCreate = { status: true, type: "create rel" };
         this.$store.state.secondActiveObj.status = true;
-          this.$store.dispatch("getSidRel", this.$store.state.activeObj.id);
-
+        this.$store.dispatch("getSidRel", this.$store.state.activeObj.id);
       } else {
         this.$store.state.objCreate = { status: false };
       }
@@ -341,10 +340,15 @@ export default {
       }
     },
     async onClick(value) {
+      console.log(this.$store.state.asid.root.node.parentNodes, 'parents');
+
+      this.$store.state.asid.root.node.parentNodes = [];
+      this.$store.state.propsToAdd.parentRel = ""
       this.$store.state.activeObj = this.prep;
 
       // Set active object
       // this.onClickReset();
+
       if (this.$store.state.selectedGraph == "Admin") {
         await this.$store.dispatch(
           "getAsidRootConfig",
@@ -362,9 +366,11 @@ export default {
 
       if (this.$store.state.secondActiveObj.status) {
         this.$store.state.secondActiveObj.node = value;
-        console.log(this.$store.state.secondActiveObj, 'second')
       } else {
         this.$store.state.activeObj = value;
+        if (this.$store.state.objCreate.type == "create from") {
+          await this.$store.dispatch("getSystemSub");
+        }
       }
       this.$store.state.textFields = [];
     },
@@ -406,7 +412,6 @@ export default {
     async drawCanvas() {
       // Call for inital data
 
-  
       const width = window.innerWidth;
       const height = window.innerHeight - 223;
 
@@ -805,17 +810,17 @@ export default {
       }
 
       function rightClick(d) {
-                  ref.$store.state.label = '';
-          ref.$store.state.textFields = [];
-          ref.$store.state.propsToShow = [];
-          ref.$store.state.createObj = {
-      rel: {},
-      node: { props: { key: "", value: "" } },
-      asid: [],
-    },
-    ref.$store.state.relsInfoData={}
+        ref.$store.state.label = "";
+        ref.$store.state.textFields = [];
+        ref.$store.state.propsToShow = [];
+        (ref.$store.state.createObj = {
+          rel: {},
+          node: { props: { key: "", value: "" } },
+          asid: []
+        }),
+          (ref.$store.state.relsInfoData = {});
 
-     ref.$store.state.propsToAdd = []; 
+        ref.$store.state.propsToAdd = [];
 
         d.preventDefault();
         if (d.target.nodeName == "svg") {
@@ -868,7 +873,6 @@ export default {
 </script>
 
 <style>
-
 .linkSVG {
   stroke: #999;
   stroke-opacity: 0.6;
