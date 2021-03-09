@@ -444,6 +444,23 @@ export default {
         .attr("fill", "#999")
         .attr("overflow", "visible");
 
+
+            svg
+        .append("svg:defs")
+        .append("svg:marker")
+        .attr("id", "self-arrow")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 41.5)
+        .attr("refY", 2)
+        .attr("markerWidth", 11)
+        .attr("markerHeight", 11)
+        .attr("orient", "159deg")
+        .append("path")
+        .attr("d", "M 0,-5 L 10 ,0 L 0,5")
+        .attr("fill", "#999")
+        .attr("overflow", "visible");
+
+
       // Create simulation
 
       const simulation = d3
@@ -493,8 +510,9 @@ export default {
           return "edge" + d.id;
         })
         .attr("marker-end", d => {
-          return d.source == d.target ? "" : "url(#end-arrow)";
+          return d.source == d.target ? "url(#self-arrow)" : "url(#end-arrow)";
         })
+
         .attr("class", "linkSVG");
       // Create nodes
       // var that = this
