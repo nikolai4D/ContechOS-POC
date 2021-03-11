@@ -207,7 +207,7 @@ export default {
       }
     };
   },
-  props: ["isLoaded"],
+  //props: ["isLoaded"],
 
   computed: {
     ...mapState({
@@ -217,45 +217,37 @@ export default {
   },
   watch: {
     "$store.state.graphString": async function() {
+      
       d3.selectAll("svg > *").remove();
 
       await this.drawCanvas();
-      let deletedNode = this.$store.state.deletedNode;
-      let deletedRel = this.$store.state.deletedRel;
-      d3.select("#node" + deletedNode.id)
-        .data(deletedNode)
-        .exit()
-        .remove();
-      d3.select("#edge" + deletedRel.id)
-        .data(deletedRel)
-        .exit()
-        .remove();
-      d3.select("#nodeLabel" + deletedNode.id)
-        .data(deletedNode)
-        .exit()
-        .remove();
-      d3.select("#edgeLabel" + deletedRel.id)
-        .data(deletedRel)
-        .exit()
-        .remove();
+      // let deletedNode = this.$store.state.deletedNode;
+      // let deletedRel = this.$store.state.deletedRel;
+      // d3.select("#node" + deletedNode.id)
+      //   .data(deletedNode)
+      //   .exit()
+      //   .remove();
+      // d3.select("#edge" + deletedRel.id)
+      //   .data(deletedRel)
+      //   .exit()
+      //   .remove();
+      // d3.select("#nodeLabel" + deletedNode.id)
+      //   .data(deletedNode)
+      //   .exit()
+      //   .remove();
+      // d3.select("#edgeLabel" + deletedRel.id)
+      //   .data(deletedRel)
+      //   .exit()
+      //   .remove();
 
-      // Reset store
-      this.$store.state.deletedNode = {};
-      this.$store.state.deletedRel = {};
+      // // Reset store
+      // this.$store.state.deletedNode = {};
+      // this.$store.state.deletedRel = {};
     },
     deep: true
   },
-  created() {
-    // window.addEventListener("resize", this.resized);
-  },
-  destroyed() {
-    // window.removeEventListener("resize", this.resized);
-  },
   methods: {
-    resized() {
-      // d3.selectAll("svg > *").remove();
-      // this.drawCanvas();
-    },
+
     async triggerEvent(value) {
       this.$store.state.propsToChange = [];
       d3.selectAll("circle").attr("stroke", null);
@@ -454,12 +446,11 @@ export default {
         .attr("refY", 2)
         .attr("markerWidth", 11)
         .attr("markerHeight", 11)
-        .attr("orient", "159deg")
+        .attr("orient", "187.5deg")
         .append("path")
         .attr("d", "M 0,-5 L 10 ,0 L 0,5")
         .attr("fill", "#999")
         .attr("overflow", "visible");
-
 
       // Create simulation
 
@@ -472,7 +463,7 @@ export default {
             .id(d => d.id)
             .distance(200)
         )
-        .force("charge", d3.forceManyBody().strength(-2000))
+        .force("charge", d3.forceManyBody().strength(-1800))
         .force(
           "collide",
           d3
@@ -527,7 +518,7 @@ export default {
               .attr("id", d => {
                 return "node" + d.id;
               })
-              .attr("fill", d => {
+              .attr("fill", (d) => {
                 let colorList = ["red"];
                 if (this.$store.state.groups.length < 3) {
                   colorList = this.$store.state.colors.length3;
@@ -538,6 +529,7 @@ export default {
                   colorList = this.$store.state.colors[set];
                 }
                 return colorList[d.group - 1];
+                // return "none"
               })
               .attr("cursor", "pointer")
               .call(
@@ -644,6 +636,7 @@ export default {
             // and ending points of the arc are the same, so kludge it.
             x2 = x2 + 1;
             y2 = y2 + 1;
+                        return `M${d.source.x-5},${d.source.y-30}A32,32 -5,1,1 ${d.target.x+1},${d.target.y+1}`;
           }
           return (
             "M" +
