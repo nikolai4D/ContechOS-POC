@@ -528,6 +528,7 @@ export default new Vuex.Store({
             node.labels.map((obj) => {
               if (obj != configType) {
                 let group = {};
+
                 if (!groups.includes(obj)) {
                   groups.push(obj);
                   group = groups.length;
@@ -818,7 +819,6 @@ export default new Vuex.Store({
         });
 
         let newObject = { root: asidRoot, childProps: asidChildProps };
-        console.log(newObject)
         commit("SET_ASID_ROOT_CONFIG", newObject);
       } catch (error) {
         console.error(error.response.data.message);

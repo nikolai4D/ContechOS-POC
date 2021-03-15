@@ -50,10 +50,6 @@ export default {
         this.$store.dispatch("readModel", item.title);
       } else {
         this.$store.state.graph = {
-          config: { nodes: [], links: [] },
-          systemmodel: { nodes: [], links: [] },
-          informationmodel: { nodes: [], links: [] },
-          datamodel: { nodes: [], links: [] }
         };
       }
     }
