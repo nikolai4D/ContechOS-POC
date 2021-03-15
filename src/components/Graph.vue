@@ -3,107 +3,10 @@
     <svg />
 
     <v-menu v-model="showMenuCanvas" :position-x="x" :position-y="y" absolute offset-y>
-      <v-list dense>
-        <v-list-item-group color="primary">
-          <div>
-            <v-list-item
-              @click="triggerEvent(item.type)"
-              v-for="(item, i) in items.canvas"
-              :key="i"
-            >
-              <v-list-item-icon>
-                <v-icon v-text="item.icon"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.text"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </div>
-          <v-menu small v-model="showMenuNode" :position-x="x" :position-y="y" absolute offset-y>
-            <v-list small dense>
-              <v-list-item-group color="primary">
-                <v-item class="pa-2">
-                  <v-list-item-title>(Nod): {{prep.title}}</v-list-item-title>
-                </v-item>
-
-                <div v-if="this.$store.state.selectedGraph == 'Config'">
-                  <v-list-item
-                    v-for="(item, i) in items.node.config"
-                    :key="i"
-                    @click="triggerEvent(item.type)"
-                  >
-                    <v-list-item-icon>
-                      <v-icon v-text="item.icon"></v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.text"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </div>
-
-                <div
-                  v-else-if="this.$store.state.selectedGraph == 'Admin' || this.$store.state.selectedGraph == 'System' "
-                >
-                  <v-list-item
-                    v-for="(item, i) in items.node.as"
-                    :key="i"
-                    @click="triggerEvent(item.type)"
-                  >
-                    <v-list-item-icon>
-                      <v-icon v-text="item.icon"></v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.text"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </div>
-
-                <div v-else>
-                  <v-list-item
-                    v-for="(item, i) in items.node.id"
-                    :key="i"
-                    @click="triggerEvent(item.type)"
-                  >
-                    <v-list-item-icon>
-                      <v-icon v-text="item.icon"></v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.text"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </div>
-
-                <v-divider></v-divider>
-                <div>
-                  <v-divider></v-divider>
-                  <div class="text-right pa-2">
-                    <v-btn icon rounded>
-                      <v-icon
-                        @click="deleteNode"
-                        v-text="items.node.delete.icon"
-                        color="error"
-                      >mdi-delete-forever-outline</v-icon>
-                    </v-btn>
-                  </div>
-                </div>
-              </v-list-item-group>
-            </v-list>
-          </v-menu>
-          <v-divider></v-divider>
-          <div>
-            <v-divider></v-divider>
-            <div class="text-right pa-2">
-              <v-btn icon rounded>
-                <v-icon
-                  @click="deleteNode"
-                  v-text="items.node.delete.icon"
-                  color="error"
-                >mdi-delete-forever-outline</v-icon>
-              </v-btn>
-            </div>
-          </div>
-        </v-list-item-group>
-      </v-list>
+      <GraphMenuCanvas :prep="prep" />
+    </v-menu>
+    <v-menu small v-model="showMenuNode" :position-x="x" :position-y="y" absolute offset-y>
+      <GraphMenuNode :prep="prep" />
     </v-menu>
   </div>
 </template>
@@ -111,8 +14,11 @@
 <script>
 import * as d3 from "d3";
 import { mapState } from "vuex";
+import GraphMenuCanvas from "./GraphMenuCanvas";
+import GraphMenuNode from "./GraphMenuNode";
 export default {
   name: "Graph",
+  components: { GraphMenuCanvas, GraphMenuNode },
   data() {
     return {
       width: 0,
@@ -129,76 +35,6 @@ export default {
       showMenuRel: false,
 
       prep: {},
-      items: {
-        canvas: [
-          {
-            type: "create",
-            text: "Skapa nod",
-            icon: "mdi-plus-circle-outline"
-          }
-        ],
-        node: {
-          delete: {
-            type: "delete",
-            text: "Ta bort nod",
-            icon: "mdi-delete-forever-outline"
-          },
-          config: [
-            {
-              type: "create to",
-              text: "Skapa: (Nod) -> (Ny)",
-              icon: "mdi-ray-start-arrow"
-            },
-            {
-              type: "create rel",
-              text: "Skapa: (Nod) -> (Bef)",
-              icon: "mdi-vector-line"
-            },
-            {
-              type: "update",
-              text: "Redigera nod",
-              icon: "mdi-circle-edit-outline"
-            }
-          ],
-          as: [
-            {
-              type: "create from",
-              text: "Skapa: (Nod) <- (Ny)",
-              icon: "mdi-ray-end-arrow"
-            },
-
-            {
-              type: "create rel",
-              text: "Skapa: (Nod) -> (Bef)",
-              icon: "mdi-vector-line"
-            },
-            {
-              type: "update",
-              text: "Redigera nod",
-              icon: "mdi-circle-edit-outline"
-            }
-          ],
-          id: [
-            {
-              type: "create from",
-              text: "Skapa: (Nod) <- (Ny)",
-              icon: "mdi-ray-end-arrow"
-            },
-
-            {
-              type: "create rel",
-              text: "Skapa: (Nod) -> (Bef)",
-              icon: "mdi-vector-line"
-            },
-            {
-              type: "update",
-              text: "Redigera nod",
-              icon: "mdi-circle-edit-outline"
-            }
-          ]
-        },
-        rel: []
-      },
       svg: null,
       node: null,
       link: null,
@@ -213,61 +49,76 @@ export default {
   },
 
   watch: {
+    // Watching change in graphString in store
     graphString() {
+      // If changes, runs update()
       this.update();
     }
   },
   methods: {
-    nodeColor(status){
-          return status.attr("fill", d => {
-              let colorList = [];
-              if (this.groups.length < 3) {
-                colorList = this.colors.length3;
-              } else if (this.groups.length > 8) {
-                colorList = this.colors.length32;
-              } else {
-                let set = "length" + this.groups.length;
-                colorList = this.colors[set];
-              }
-              return colorList[d.group - 1];
-            });          
-    },
-    async deleteNode() {
-      let response = confirm(
-        `Är du säker på att du vill ta bort "${this.prep.title}"?`
-      );
-
-      if (response) {
-        if (this.$store.state.selectedGraph == "Config") {
-          await this.$store.dispatch("deleteConfigNode", this.prep);
-        } else if (this.$store.state.selectedGraph == "Admin") {
-          await this.$store.dispatch("deleteAsidNode", this.prep);
+    nodeColor(status) {
+      return status.attr("fill", d => {
+        let colorList = [];
+        if (this.groups.length < 3) {
+          colorList = this.colors.length3;
+        } else if (this.groups.length > 8) {
+          colorList = this.colors.length32;
         } else {
-          await this.$store.dispatch("deleteNode", this.prep);
+          let set = "length" + this.groups.length;
+          colorList = this.colors[set];
         }
-      }
+        return colorList[d.group - 1];
+      });
     },
-    async triggerEvent(value) {
-      this.$store.state.propsToChange = [];
-      d3.selectAll("circle").attr("stroke", null);
+    linkPathArrows(status) {
+      return status
+        .append("path")
+        .attr("id", function(d) {
+          return "edge" + d.id;
+        })
+        .attr("marker-end", d => {
+          return d.source == d.target ? "url(#self-arrow)" : "url(#end-arrow)";
+        })
+        .attr("class", "linkSVG");
+    },
+
+    clickedNode(event, d) {
+      if (event.defaultPrevented) return; // dragged
+      delete d.fx; // remove fixed coordinates
+      delete d.fy;
+      // d3.select(this).attr("stroke", null);
+      this.simulation.alpha(1).restart();
+      this.onClick(d, "node");
+
       d3.selectAll("text").classed("textEdgeFocus", false);
+      d3.selectAll("circle").attr("stroke", null);
+      d3.select("#node" + d.id)
+        .attr("stroke-opacity", "0.8")
+
+        .attr("stroke", "#c7e1ff");
+
+      // .attr("stroke-width", "10px");
+      // d3.select("#node" + d.id).attr("stroke", "#c7e1ff")
+
+      this.prep = {};
+    },
+    async onClick(value) {
+      this.$store.state.propsToAdd = [];
+      this.$store.state.textFields = [];
+
+      // Set active object
+      if (this.$store.state.secondActiveObj.status) {
+        this.$store.state.secondActiveObj.node = value;
+      } else {
+        this.$store.state.activeObj = value;
+      }
+
       if (this.$store.state.selectedGraph == "Admin") {
         await this.$store.dispatch(
           "getAsidRootConfig",
           this.$store.state.selectedGraph
         );
-        this.$store.state.propsToChange = this.$store.state.asid.root.node.props.map(
-          obj => {
-            if (obj.dataType == "string") {
-              return { keyId: obj.keyId, value: "", key: obj.key };
-            }
-          }
-        );
-        this.$store.state.done = "true";
-        this.$store.state.done = "false";
-      }
-
-      if (
+      } else if (
         this.$store.state.selectedGraph != "Config" &&
         this.$store.state.selectedGraph != "Admin"
       ) {
@@ -275,48 +126,12 @@ export default {
           "getSystemRootConfig",
           this.$store.state.selectedGraph
         );
-        this.$store.state.propsToChange = this.$store.state.asid.root.node.props.map(
-          obj => {
-            if (obj.dataType == "string") {
-              return { keyId: obj.keyId, value: "", key: obj.key };
-            }
-          }
-        );
-        this.$store.state.done = "true";
-        this.$store.state.done = "false";
-      }
-
-      if (value == "update") {
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objEditingId = this.prep.id;
-        this.$store.state.objCreate = { status: false };
-      } else if (value == "create") {
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objCreate = { status: true, type: "create" };
-      } else if (value == "create to") {
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objCreate = { status: true, type: "create to" };
-      } else if (value == "create from") {
-        if (
-          this.$store.state.selectedGraph != "Config" &&
-          this.$store.state.selectedGraph != "Admin"
-        ) {
+        if (this.$store.state.objCreate.type == "create from") {
           await this.$store.dispatch("getSystemSub");
         }
-
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objCreate = { status: true, type: "create from" };
-      } else if (value == "create rel") {
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objCreate = { status: true, type: "create rel" };
-        this.$store.state.secondActiveObj.status = true;
-        this.$store.dispatch("getSidRel", this.$store.state.activeObj.id);
-      } else {
-        this.$store.state.objCreate = { status: false };
       }
     },
 
-    // When node starts to drag
     rightClick(d) {
       this.$store.state.label = "";
       this.$store.state.textFields = [];
@@ -347,7 +162,7 @@ export default {
         this.x = d.clientX;
         this.y = d.clientY;
         this.prep = d.target.__data__;
-        console.log("prep", this.prep);
+        console.log("prep before", this.prep);
         this.$store.state.activeObj = this.prep;
 
         this.$nextTick(() => {
@@ -368,21 +183,22 @@ export default {
         });
       }
     },
+
+    /* When start dragging node */
     dragstarted(d) {
       d3.select(this).attr("stroke", "#f8d084d");
       d3.select(this).attr("stroke-width", "5px");
       d3.select(this).classed("fixed", (d.fixed = true));
     },
-    // When node is dragging, fixed x and y
 
+    /* When node is dragging, fixed x and y */
     dragged(event, d) {
       d.fx = event.x;
       d.fy = event.y;
       this.simulation.alpha(1).restart();
     },
 
-    // When node drgging has ended
-
+    /* When node drgging has ended */
     dragended() {
       if (!event.active) this.simulation.alphaTarget(0);
       // d.fx = null;
@@ -392,6 +208,7 @@ export default {
         .attr("r", this.margin.r);
     },
 
+    /* Sets angle on link label */
     angle(cx, cy, ex, ey) {
       var dy = ey - cy;
       var dx = ex - cx;
@@ -399,6 +216,8 @@ export default {
       theta *= 180 / Math.PI;
       return theta;
     },
+
+    /* Changes data in local state, to preserve position of nodes/links */
     updateData() {
       const old = new Map(this.node.data().map(d => [d.id, d]));
       this.graph.nodes = this.graph.nodes.map(d =>
@@ -407,28 +226,27 @@ export default {
       this.graph.links = this.graph.links.map(d => Object.assign({}, d));
     },
 
+    /* Runs when data in store changes */
     update() {
       this.updateData();
 
+      var that = this;
+
+      // Stoping simulation after updating data
+
       this.simulation.stop();
+
+      // Drawing links
 
       this.link = this.svg
         .selectAll(".linkSVG")
         .data(this.graph.links)
         .join(enter => {
-          const link_enter = enter
-            .append("path")
-            .attr("id", function(d) {
-              return "edge" + d.id;
-            })
-            .attr("marker-end", d => {
-              return d.source == d.target
-                ? "url(#self-arrow)"
-                : "url(#end-arrow)";
-            })
-            .attr("class", "linkSVG");
+          const link_enter = this.linkPathArrows(enter);
           return link_enter;
         });
+
+      // Drawing link labels
 
       this.linkLabels = this.svg
         .selectAll(".textEdge")
@@ -454,6 +272,8 @@ export default {
             return linkLabel;
           }
         );
+
+      // Drawing nodes
 
       this.node = this.svg
         .selectAll("circle")
@@ -485,14 +305,18 @@ export default {
                   .on("start", this.dragstarted)
                   .on("drag", this.dragged)
                   .on("end", this.dragended)
-              );
+              )
+              .on("click", that.clickedNode);
+
             return node_enter;
           },
           update => {
-            const node_update = this.nodeColor(update)
-            return node_update
+            const node_update = this.nodeColor(update);
+            return node_update;
           }
         );
+
+      // Drawing node labels
 
       this.nodeLabels = this.svg
         .selectAll(".textNode")
@@ -531,6 +355,8 @@ export default {
           }
         );
 
+      // Restarting simulation with new nodes and links
+
       this.simulation
         .nodes(this.graph.nodes)
         .force("link")
@@ -539,9 +365,8 @@ export default {
     }
   },
   created() {
-    
     // Setting dimensions of canvas
-    
+
     this.width = window.innerWidth;
     this.height = window.innerHeight - 223;
 
@@ -719,10 +544,9 @@ export default {
         }
 
         if (d.target.x < d.source.x) {
-         
-         // Rotating label 180 degrees (prevent it going upside down)
-         
-         return `rotate(${180 + theAngle} ${rx} ${ry})`;
+          // Rotating label 180 degrees (prevent it going upside down)
+
+          return `rotate(${180 + theAngle} ${rx} ${ry})`;
         } else {
           return `rotate(${theAngle} ${rx} ${ry})`;
         }
@@ -734,12 +558,6 @@ export default {
 </script>
 
 <style>
-.linkSVG {
-  stroke: #999;
-  stroke-opacity: 0.6;
-  fill: none;
-}
-
 .linkSVG {
   stroke: #999;
   stroke-opacity: 0.6;
