@@ -13,7 +13,7 @@
       </div>
       <div v-else>
         <v-btn text class="blue--text" to="/login">Logga in</v-btn>
-        <!-- <v-btn text class="blue--text"  to="/register">Registrera</v-btn> -->
+        <v-btn text class="blue--text" disabled to="/register">Registrera</v-btn>
       </div>
     </v-app-bar>
 

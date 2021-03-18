@@ -43,6 +43,7 @@ export default {
       simulation: null
     };
   },
+  props:["graph"],
 
   computed: {
     ...mapState([
@@ -549,6 +550,7 @@ export default {
       .attr("stroke", "#000")
       .attr("stroke-width", 1.5)
       .selectAll("path")
+
       .attr("class", "linkSVG");
 
     // Adding labels to links
