@@ -45,7 +45,15 @@ export default {
   },
 
   computed: {
-    ...mapState(["graph", "graphString", "colors", "groups", "selectedGraph", "propsToAdd", "textFields"])
+    ...mapState([
+      "graph",
+      "graphString",
+      "colors",
+      "groups",
+      "selectedGraph",
+      "propsToAdd",
+      "textFields"
+    ])
   },
 
   watch: {
@@ -97,7 +105,7 @@ export default {
 
       this.prep = {};
     },
-    
+
     onClickReset() {
       // Set active object
       d3.selectAll("circle").attr("stroke", null);
@@ -252,7 +260,7 @@ export default {
     update() {
       this.updateData();
 
-      var that = this;
+      // var that = this;
 
       // Stoping simulation after updating data
 
@@ -266,7 +274,8 @@ export default {
         .join(enter => {
           const link_enter = this.linkPathArrows(enter);
           return link_enter;
-        });
+        },
+        );
 
       // Drawing link labels
 
@@ -328,21 +337,21 @@ export default {
                   .on("drag", this.dragged)
                   .on("end", this.dragended)
               )
-                            .on("mouseover", handleMouseOverNode)
+              .on("mouseover", handleMouseOverNode)
               .on("mouseout", handleMouseOutNode)
-              .on("click", that.clickedNode);
+              .on("click", this.clickedNode);
 
             return node_enter;
           },
           update => {
-            const node_update = this.nodeColor(update)
-            
+            const node_update = this.nodeColor(update);
+
             return node_update;
           }
         );
       // If mouse over node
 
-var ref = this;
+      var ref = this;
 
       function handleMouseOverNode() {
         d3.select(this)
@@ -527,7 +536,7 @@ var ref = this;
       .attr("refY", 2)
       .attr("markerWidth", 11)
       .attr("markerHeight", 11)
-      .attr("orient", "187.5deg")
+      .attr("orient", "168deg")
       .append("path")
       .attr("d", "M 0,-5 L 10 ,0 L 0,5")
       .attr("fill", "#999")
@@ -585,7 +594,7 @@ var ref = this;
         // Self link
 
         if (x1 === x2 && y1 === y2) {
-          return `M${x1 - 5},${y1 - 30}A32,32 -5,1,1 ${x2 + 1},${y2 + 1}`;
+          return `M${x1 - 5},${y1 - 30}A26,26 -10,1,1 ${x2 + 1},${y2 + 1}`;
         }
 
         // else, straight line between nodes
