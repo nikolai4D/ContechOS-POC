@@ -1,13 +1,18 @@
 <template>
-  <v-content>
+  <v-main>
     <SideBar />
     <!-- <v-container fluid fill-height v-if="graphSelected == 'Config'"> -->
-      <!-- <v-col> -->
-        <HomeConfigSelect />
-        <!-- <div v-if="$store.state.selectConfigType == ''">Välj config</div> -->
-        <HomeChips  v-if="$store.state.selectConfigType != ''"/>
-      <!-- </v-col> -->
-      <!-- <GraphConfig class="graph" :isLoaded="isLoadedSys" v-if="$store.state.selectConfigType != ''" /> -->
+    <!-- <v-col> -->
+    <div class="pa-2" v-if="graphSelected == 'Config'">
+      <HomeConfigSelect v-if="graphSelected == 'Config'" />
+      <HomeChips />
+
+      <Graph />
+    </div>
+    <!-- <HomeChips  v-if="$store.state.selectConfigType != ''"/> -->
+    <!-- </v-col> -->
+    <!-- </v-container> -->
+    <!-- <GraphConfig class="graph" :isLoaded="isLoadedSys" v-if="$store.state.selectConfigType != ''" /> -->
     <!-- </v-container>
     <v-container fluid fill-height v-if="graphSelected == 'Admin'">
       <v-col>
@@ -30,11 +35,15 @@
     <v-container fluid fill-height v-if="graphSelected == 'Data'">
       <v-col>
         <HomeChips />
-      </v-col> -->
-      <Graph/>
-      <!-- <GraphData class="graph" v-if="graphSelected = 'Data'" /> -->
+    </v-col>-->
+    <div v-else>
+      <HomeChips />
+
+      <Graph />
+    </div>
+    <!-- <GraphData class="graph" v-if="graphSelected = 'Data'" /> -->
     <!-- </v-container> -->
-  </v-content>
+  </v-main>
 </template>
 
 <script>
@@ -47,7 +56,6 @@ import SideBar from "./SideBar";
 import HomeChips from "../components/HomeChips";
 import HomeConfigSelect from "../components/HomeConfigSelect";
 import Graph from "../components/Graph";
-
 
 import { mapState } from "vuex";
 export default {

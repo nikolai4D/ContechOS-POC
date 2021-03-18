@@ -1292,6 +1292,6 @@ export default new Vuex.Store({
   getters: {
     async getConfigConfigNodes(state) {
       return await state.setConfigConfig.nodes;
-    },
+    }
   },
 });

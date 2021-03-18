@@ -45,7 +45,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["graph", "graphString", "colors", "groups"])
+    ...mapState(["graph", "graphString", "colors", "groups", "selectedGraph", "propsToAdd", "textFields"])
   },
 
   watch: {
@@ -86,49 +86,72 @@ export default {
       if (event.defaultPrevented) return; // dragged
       delete d.fx; // remove fixed coordinates
       delete d.fy;
-      // d3.select(this).attr("stroke", null);
       this.simulation.alpha(1).restart();
-      this.onClick(d, "node");
+      this.clickedNodeBack(d, "node");
 
       d3.selectAll("text").classed("textEdgeFocus", false);
       d3.selectAll("circle").attr("stroke", null);
       d3.select("#node" + d.id)
         .attr("stroke-opacity", "0.8")
-
         .attr("stroke", "#c7e1ff");
-
-      // .attr("stroke-width", "10px");
-      // d3.select("#node" + d.id).attr("stroke", "#c7e1ff")
 
       this.prep = {};
     },
-    async onClick(value) {
+    
+    onClickReset() {
+      // Set active object
+      d3.selectAll("circle").attr("stroke", null);
+      d3.selectAll("text").classed("textEdgeFocus", false);
+      this.$store.state.propsToChange = [];
+
+      this.$store.state.setConfigConfig = {};
+      this.$store.state.setConfigConfigString = JSON.stringify(
+        this.$store.state.setConfigConfig
+      );
+      (this.$store.state.createObj = {
+        rel: {},
+        node: { props: { key: "", value: "" } },
+        asid: []
+      }),
+        (this.$store.state.activeObj = {});
+      this.prep = {};
+      this.$store.state.objCreate = { status: false };
+      this.$store.state.successful = null;
+      this.$store.state.secondActiveObj = {
+        status: false,
+        node: { title: null }
+      };
+      this.$store.state.setConfigConfigString = JSON.stringify(
+        this.$store.state.setConfigConfig
+      );
+    },
+
+    async clickedNodeBack(value) {
       this.$store.state.propsToAdd = [];
       this.$store.state.textFields = [];
 
       // Set active object
-      if (this.$store.state.secondActiveObj.status) {
-        this.$store.state.secondActiveObj.node = value;
-      } else {
-        this.$store.state.activeObj = value;
-      }
 
-      if (this.$store.state.selectedGraph == "Admin") {
-        await this.$store.dispatch(
-          "getAsidRootConfig",
-          this.$store.state.selectedGraph
-        );
+      this.$store.state.secondActiveObj.status
+        ? (this.$store.state.secondActiveObj.node = value)
+        : (this.$store.state.activeObj = value);
+
+      if (this.selectedGraph == "Admin") {
+        await this.$store.dispatch("getAsidRootConfig", this.selectedGraph);
       } else if (
-        this.$store.state.selectedGraph != "Config" &&
-        this.$store.state.selectedGraph != "Admin"
+        this.selectedGraph != "Config" &&
+        this.selectedGraph != "Admin"
       ) {
-        await this.$store.dispatch(
-          "getSystemRootConfig",
-          this.$store.state.selectedGraph
-        );
+        await this.$store.dispatch("getSystemRootConfig", this.selectedGraph);
         if (this.$store.state.objCreate.type == "create from") {
           await this.$store.dispatch("getSystemSub");
         }
+      }
+    },
+
+    clickedSvg(d) {
+      if (d.target.nodeName == "svg") {
+        this.onClickReset();
       }
     },
 
@@ -162,7 +185,6 @@ export default {
         this.x = d.clientX;
         this.y = d.clientY;
         this.prep = d.target.__data__;
-        console.log("prep before", this.prep);
         this.$store.state.activeObj = this.prep;
 
         this.$nextTick(() => {
@@ -306,15 +328,67 @@ export default {
                   .on("drag", this.dragged)
                   .on("end", this.dragended)
               )
+                            .on("mouseover", handleMouseOverNode)
+              .on("mouseout", handleMouseOutNode)
               .on("click", that.clickedNode);
 
             return node_enter;
           },
           update => {
-            const node_update = this.nodeColor(update);
+            const node_update = this.nodeColor(update)
+            
             return node_update;
           }
         );
+      // If mouse over node
+
+var ref = this;
+
+      function handleMouseOverNode() {
+        d3.select(this)
+          .attr("stroke-width", () => {
+            return "5px";
+          })
+          .attr("stroke-opacity", "0.8");
+
+        d3.select(this).attr("stroke", d => {
+          if (d.color == 1) {
+            return "#f0a4a4";
+          } else {
+            return "#f8d084";
+          }
+        });
+
+        // d3.selectAll("text").classed("textEdgeFocus", false);
+        d3.select("#node" + ref.$store.state.activeObj.id)
+          .attr("stroke", "#c7e1ff")
+          .attr("stroke-opacity", "0.8")
+
+          .attr("stroke-width", "7px");
+
+        d3.select("#edgeLabel" + ref.$store.state.activeObj.id).classed(
+          "textEdgeFocus",
+          true
+        );
+      }
+
+      // Directly after mouse was over
+
+      function handleMouseOutNode() {
+        // d3.selectAll("text").classed("textEdgeFocus", false);
+        d3.selectAll("circle").attr("stroke", null);
+
+        d3.select("#node" + ref.$store.state.activeObj.id)
+          .attr("stroke", "#c7e1ff")
+          .attr("stroke-opacity", "0.8")
+
+          .attr("stroke-width", "7px");
+
+        d3.select("#edgeLabel" + ref.$store.state.activeObj.id).classed(
+          "textEdgeFocus",
+          true
+        );
+      }
 
       // Drawing node labels
 
@@ -412,6 +486,8 @@ export default {
 
     this.svg = d3
       .select("svg")
+      .on("click", that.clickedSvg)
+
       .on("contextmenu", that.rightClick)
       .call(
         d3.zoom().on("zoom", function({ transform }) {

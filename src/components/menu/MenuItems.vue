@@ -36,21 +36,21 @@ export default {
       ]
     };
   },
-  props:['getMenuItem'],
+  props: ["getMenuItem"],
   methods: {
     checkSelectedItem(item) {
       this.selectedItem = this.items.indexOf(item);
       this.$store.state.selectedGraph = item.title;
       this.$store.state.selectConfigType = "";
       this.$store.state.activeObj = {};
-      this.$store.state.objCreate = { status: false};
-
+      this.$store.state.objCreate = { status: false };
 
       if (item.title != "Config") {
         this.$store.dispatch("readModel", item.title);
       } else {
-        this.$store.state.graph = {
-        };
+        this.$store.state.graph = { nodes: [], links: [] };
+        this.$store.state.graphString = "";
+        this.$store.state.groups= []
       }
     }
   }
