@@ -141,7 +141,7 @@ export default {
 
   data() {
     return {
-      switch1: false,
+      switch1: true,
       secondAct: null,
       selectedItem: 0,
       showoOverlay: false,

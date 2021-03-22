@@ -540,14 +540,13 @@ export default {
                 return "node" + d.id;
               })
               .attr("fill", (d) => {
-                let colorList = ["red"];
-                if (this.$store.state.groups.length < 3) {
-                  colorList = this.$store.state.colors.length3;
-                } else if (this.$store.state.groups.length > 8) {
-                  colorList = this.$store.state.colors.length32;
+                if (this.groups.length < 3) {
+                  colorList = this.colors.length3;
+                } else if (this.groups.length > 8) {
+                  colorList = this.colors.length32;
                 } else {
-                  let set = "length" + this.$store.state.groups.length;
-                  colorList = this.$store.state.colors[set];
+                  let set = "length" + this.groups.length;
+                  colorList = this.colors[set];
                 }
                 return colorList[d.group - 1];
                 // return "none"

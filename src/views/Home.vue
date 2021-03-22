@@ -5,47 +5,30 @@
       <v-col>
         <HomeConfigSelect />
         <!-- <div v-if="$store.state.selectConfigType == ''">Välj config</div> -->
-        <HomeChips  v-if="$store.state.selectConfigType != ''"/>
+        <HomeChips  v-if="selectConfigType != ''"/>
       </v-col>
-      <GraphConfig class="graph" :isLoaded="isLoadedSys" v-if="$store.state.selectConfigType != ''" />
+      <Graph/>
+      <!-- <GraphConfig class="graph" :isLoaded="isLoadedSys" v-if="$store.state.selectConfigType != ''" /> -->
     </v-container>
-    <v-container fluid fill-height v-if="graphSelected == 'Admin'">
+    <v-container fluid fill-height v-else>
       <v-col>
-        <HomeChips />
+        <HomeChips v-if="selectedGraph != 'Admin'"/>
       </v-col>
-      <GraphAdmin class="graph" v-if="graphSelected = 'Admin'" :isLoaded="isLoadedSys" />
-    </v-container>
-    <v-container fluid fill-height v-if="graphSelected == 'System'">
-      <v-col>
-        <HomeChips />
-      </v-col>
-      <GraphSystem class="graph" v-if="graphSelected = 'System'" :isLoaded="isLoadedSys" />
-    </v-container>
-    <v-container fluid fill-height v-if="graphSelected == 'Information'">
-      <v-col>
-        <HomeChips />
-      </v-col>
-      <GraphInfo class="graph" v-if="graphSelected = 'Information'" />
-    </v-container>
-    <v-container fluid fill-height v-if="graphSelected == 'Data'">
-      <v-col>
-        <HomeChips />
-      </v-col>
-      <GraphData class="graph" v-if="graphSelected = 'Data'" />
+      <Graph/>
     </v-container>
   </v-main>
 </template>
 
 <script>
 import SideBar from "./SideBar";
-import GraphConfig from "./GraphConfig";
-import GraphAdmin from "./GraphAdmin";
-import GraphData from "./GraphData";
-import GraphInfo from "./GraphInfo";
-import GraphSystem from "./GraphSystem";
+// import GraphConfig from "./GraphConfig";
+// import GraphAdmin from "./GraphAdmin";
+// import GraphData from "./GraphData";
+// import GraphInfo from "./GraphInfo";
+// import GraphSystem from "./GraphSystem";
 import HomeChips from "../components/HomeChips";
 import HomeConfigSelect from "../components/HomeConfigSelect";
-// import Graph from "../components/Graph";
+import Graph from "../components/Graph";
 
 import { mapState } from "vuex";
 export default {
@@ -61,11 +44,12 @@ export default {
   components: {
     // Graph,
     SideBar,
-    GraphConfig,
-    GraphAdmin,
-    GraphData,
-    GraphInfo,
-    GraphSystem,
+    Graph,
+    // GraphConfig,
+    // GraphAdmin,
+    // GraphData,
+    // GraphInfo,
+    // GraphSystem,
     HomeChips,
     HomeConfigSelect
   },
