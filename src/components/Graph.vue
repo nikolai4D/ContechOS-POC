@@ -473,10 +473,12 @@ export default {
     },
 
     async clickedNode(event, d) {
+            this.simulation.stop()
+
       if (event.defaultPrevented) return; // dragged
       delete d.fx; // remove fixed coordinates
       delete d.fy;
-      this.simulation.alpha(1).restart();
+      // this.simulation.alpha(0.03).restart();
 
       d3.selectAll(".circle").attr("stroke", null);
       d3.select("#node" + d.id)

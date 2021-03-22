@@ -107,7 +107,6 @@ export default {
         this.secondAct == null;
       } else {
         this.secondAct = this.$store.state.secondActiveObj.node.title;
-      console.log(this.$store.state.secondActiveObj.node.parent, 'second parent')
 
 
         if (this.$store.state.objCreate.type == "create rel") {
@@ -141,7 +140,7 @@ export default {
 
   data() {
     return {
-      switch1: true,
+      switch1: false,
       secondAct: null,
       selectedItem: 0,
       showoOverlay: false,
