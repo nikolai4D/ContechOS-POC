@@ -1,6 +1,5 @@
 <template>
   <div>
- 
     <div class="div-chip" v-for="item in groups" :key="groups.indexOf(item)">
      <v-chip
         small
@@ -19,7 +18,7 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["graph", "selectedGraph", "colors", "groups"])
+    ...mapState(["colors", "groups"])
   },
   methods: {
     setColors(item) {

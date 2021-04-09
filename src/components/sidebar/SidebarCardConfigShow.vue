@@ -4,8 +4,8 @@
     <div v-if="objEditingId == activeObj.id">
       <div>
         <v-sheet outlined dark rounded>
-          <MenuCardShowNodeLabels />
-          <MenuCardEditNodeProps />
+          <SidebarCardVShowNodeLabels />
+          <SidebarCardVEditNodeProps />
         </v-sheet>
       </div>
 
@@ -23,8 +23,8 @@
     <div v-else>
       <div v-if="activeObj.source == null">
         <v-sheet outlined dark rounded>
-          <MenuCardShowNodeLabels />
-          <MenuCardShowNodeProps />
+          <SidebarCardVShowNodeLabels />
+          <SidebarCardVShowNodeProps />
 
           <v-list-item>
             <v-list-item-action>
@@ -37,7 +37,7 @@
       </div>
       <div v-else>
         <v-sheet outlined dark rounded>
-          <MenuCardShowRel />
+          <SidebarCardVShowRel />
         </v-sheet>
       </div>
     </div>
@@ -46,10 +46,10 @@
 
 <script>
 import { mapState } from "vuex";
-import MenuCardShowRel from "./MenuCardShowRel";
-import MenuCardShowNodeLabels from "./MenuCardShowNodeLabels";
-import MenuCardShowNodeProps from "./MenuCardShowNodeProps";
-import MenuCardEditNodeProps from "./MenuCardEditNodeProps";
+import SidebarCardVShowRel from "./SidebarCardVShowRel";
+import SidebarCardVShowNodeLabels from "./SidebarCardVShowNodeLabels";
+import SidebarCardVShowNodeProps from "./SidebarCardVShowNodeProps";
+import SidebarCardVEditNodeProps from "./SidebarCardVEditNodeProps";
 
 export default {
   data() {
@@ -63,10 +63,10 @@ export default {
     };
   },
   components: {
-    MenuCardShowNodeLabels,
-    MenuCardShowNodeProps,
-    MenuCardEditNodeProps,
-    MenuCardShowRel
+    SidebarCardVShowNodeLabels,
+    SidebarCardVShowNodeProps,
+    SidebarCardVEditNodeProps,
+    SidebarCardVShowRel
   },
   computed: {
     ...mapState([

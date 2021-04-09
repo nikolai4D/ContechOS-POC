@@ -4,9 +4,9 @@
     <div v-if="objEditingId == activeObj.id">
       <div>
         <v-sheet outlined dark rounded>
-          <MenuCardEditNodeLabel />
-          <MenuCardEditNodeProps />
-          <MenuCardEditNodeChildProps />
+          <SidebarCardVEditNodeLabel />
+          <SidebarCardVEditNodeProps />
+          <SidebarCardVEditNodeChildProps />
         </v-sheet>
       </div>
 
@@ -24,11 +24,11 @@
     <div v-else>
       <div v-if="activeObj.source == null">
         <v-sheet outlined dark rounded>
-          <MenuCardShowNodeLabels />
-          <MenuCardShowNodeProps />
+          <SidebarCardVShowNodeLabels />
+          <SidebarCardVShowNodeProps />
 
           <v-sheet class="ma-2" outlined dark rounded>
-            <MenuCardShowNodeChildProps />
+            <SidebarCardVShowNodeChildProps />
             <div v-if="this.$store.state.textFields.length >0">
               <v-list-item>
                 <div>
@@ -83,22 +83,22 @@
           </v-list-item>
         </v-sheet>
       </div>
-      <div v-else><MenuCardShowRel/></div>
+      <div v-else><SidebarCardVShowRel/></div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import MenuCardShowNodeLabels from "./MenuCardShowNodeLabels";
-import MenuCardShowRel from "./MenuCardShowRel";
+import SidebarCardVShowNodeLabels from "./SidebarCardVShowNodeLabels";
+import SidebarCardVShowRel from "./SidebarCardVShowRel";
 
-import MenuCardEditNodeLabel from "./MenuCardEditNodeLabel";
+import SidebarCardVEditNodeLabel from "./SidebarCardVEditNodeLabel";
 
-import MenuCardEditNodeProps from "./MenuCardEditNodeProps";
-import MenuCardEditNodeChildProps from "./MenuCardEditNodeChildProps";
-import MenuCardShowNodeProps from "./MenuCardShowNodeProps";
-import MenuCardShowNodeChildProps from "./MenuCardShowNodeChildProps";
+import SidebarCardVEditNodeProps from "./SidebarCardVEditNodeProps";
+import SidebarCardVEditNodeChildProps from "./SidebarCardVEditNodeChildProps";
+import SidebarCardVShowNodeProps from "./SidebarCardVShowNodeProps";
+import SidebarCardVShowNodeChildProps from "./SidebarCardVShowNodeChildProps";
 
 export default {
   data() {
@@ -112,13 +112,13 @@ export default {
     };
   },
   components: {
-    MenuCardShowNodeLabels,
-    MenuCardShowNodeProps,
-    MenuCardEditNodeLabel,
-    MenuCardEditNodeProps,
-    MenuCardEditNodeChildProps,
-    MenuCardShowNodeChildProps,
-    MenuCardShowRel
+    SidebarCardVShowNodeLabels,
+    SidebarCardVShowNodeProps,
+    SidebarCardVEditNodeLabel,
+    SidebarCardVEditNodeProps,
+    SidebarCardVEditNodeChildProps,
+    SidebarCardVShowNodeChildProps,
+    SidebarCardVShowRel
   },
   computed: {
     ...mapState([

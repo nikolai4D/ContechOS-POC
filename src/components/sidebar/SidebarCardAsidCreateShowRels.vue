@@ -31,13 +31,9 @@ export default {
   computed: {
     ...mapState([
       "objCreate",
-      "createObj",
       "setConfigDataType",
-      "selectConfigType",
-      "setConfigConfig",
-      "label",
-      "asid"
-    ]),
+      "setConfigConfig"
+          ]),
     getItems() {
       if (this.objCreate.type == "create") {
         return {

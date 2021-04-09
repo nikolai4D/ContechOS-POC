@@ -7,26 +7,26 @@
             <h3 v-if="objCreate.type == 'create rel'">Skapa: (Nod) -> (Bef)</h3>
             <h3 v-if="objCreate.type == 'create to'">Skapa: (Nod) -> (Ny)</h3>
             <br />
-            <MenuCardNodeActive />
+            <SidebarCardVShowNodeActive />
           </div>
           <div v-if="objCreate.type == 'create rel' && secondAct == null">
-            <MenuCardNodeNotActive :secondAct="secondAct" />
+            <SidebarCardVShowNodeNotActive :secondAct="secondAct" />
           </div>
           <div v-else-if="objCreate.type == 'create rel' && secondAct != null">
-            <MenuCardAdminConfigRel :relList="setConfigConfig" />
-            <MenuCardNodeSecondActive :secondAct="secondAct" />
+            <SidebarCardAdminConfigRel :relList="setConfigConfig" />
+            <SidebarCardVShowNodeSecondActive :secondAct="secondAct" />
           </div>
 
           <div v-else-if="objCreate.type == 'create to'">
-            <MenuCardAdminConfigRel :relList="setConfigConfig" />
-            <MenuCardAdminConfigCreateNode />
+            <SidebarCardAdminConfigRel :relList="setConfigConfig" />
+            <SidebarCardAdminConfigCreateNode />
             <br />
           </div>
 
           <!-- Create new node only -->
 
           <div v-else-if="objCreate.type=='create'">
-            <MenuCardAdminConfigCreateNode />
+            <SidebarCardAdminConfigCreateNode />
           </div>
 
           <v-list-item>
@@ -56,12 +56,12 @@
 
 <script>
 import { mapState } from "vuex";
-import MenuCardNodeActive from "./MenuCardNodeActive";
-import MenuCardNodeSecondActive from "./MenuCardNodeSecondActive";
-import MenuCardNodeNotActive from "./MenuCardNodeNotActive";
+import SidebarCardVShowNodeActive from "./SidebarCardVShowNodeActive";
+import SidebarCardVShowNodeSecondActive from "./SidebarCardVShowNodeSecondActive";
+import SidebarCardVShowNodeNotActive from "./SidebarCardVShowNodeNotActive";
 
-import MenuCardAdminConfigCreateNode from "./MenuCardAdminConfigCreateNode";
-import MenuCardAdminConfigRel from "./MenuCardAdminConfigRel";
+import SidebarCardAdminConfigCreateNode from "./SidebarCardAdminConfigCreateNode";
+import SidebarCardAdminConfigRel from "./SidebarCardAdminConfigRel";
 
 export default {
   watch: {
@@ -93,11 +93,11 @@ export default {
   },
   props: ["secondAct"],
   components: {
-    MenuCardNodeActive,
-    MenuCardNodeSecondActive,
-    MenuCardAdminConfigCreateNode,
-    MenuCardAdminConfigRel,
-    MenuCardNodeNotActive
+    SidebarCardVShowNodeActive,
+    SidebarCardVShowNodeSecondActive,
+    SidebarCardAdminConfigCreateNode,
+    SidebarCardAdminConfigRel,
+    SidebarCardVShowNodeNotActive
   },
   data() {
     return {

@@ -58,9 +58,7 @@ export default {
       "createObj",
       "setConfigDataType",
       "selectConfigType",
-      "setConfigConfig",
-      "label"
-    ]),
+      "setConfigConfig"    ]),
     getItems() {
       if (this.objCreate.type == "create") {
         return {items: this.setConfigDataType.node.props, value: "key", text:"key", id: "id"};

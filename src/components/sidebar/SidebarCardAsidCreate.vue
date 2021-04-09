@@ -11,7 +11,7 @@
             <h3 v-if="objCreate.type == 'create from'">{{createString.from}}</h3>
 
             <br />
-            <MenuCardNodeActive />
+            <SidebarCardVShowNodeActive />
           </div>
           <div v-if="activeObj.source">
             <v-list-item>
@@ -20,27 +20,27 @@
           </div>
           <div v-else>
             <div v-if="objCreate.type == 'create rel' && secondAct == null">
-              <MenuCardNodeNotActive :secondAct="secondAct" />
+              <SidebarCardVShowNodeNotActive :secondAct="secondAct" />
             </div>
             <div v-else-if="objCreate.type == 'create rel' && secondAct != null">
-              <MenuCardAsidRel :relList="setConfigConfig" :secondAct="secondAct" />
-              <MenuCardNodeSecondActive :secondAct="secondAct" />
+              <SidebarCardAsidRel :relList="setConfigConfig" :secondAct="secondAct" />
+              <SidebarCardVShowNodeSecondActive :secondAct="secondAct" />
             </div>
 
             <div v-else-if="objCreate.type == 'create to' || objCreate.type == 'create from'">
-              <MenuCardAsidRel v-if="objCreate.type == 'create to'" :relList="setConfigConfig" />
-              <MenuCardAsidRel v-if="objCreate.type == 'create from'" :relList="setConfigConfig" />
+              <SidebarCardAsidRel v-if="objCreate.type == 'create to'" :relList="setConfigConfig" />
+              <SidebarCardAsidRel v-if="objCreate.type == 'create from'" :relList="setConfigConfig" />
 
               <v-sheet outlined dark rounded>
                 <v-list-item>
                   <v-list-item-subtitle>(Ny)</v-list-item-subtitle>
                 </v-list-item>
-                <MenuSidCreateNodeParentNode v-if="selectedGraph != 'Admin'" />
-                <MenuSystemCreateLabels v-if="selectedGraph != 'Admin'" />
-                <MenuAsidCreateNodeLabels v-if="selectedGraph == 'Admin'" />
-                <MenuAsidCreateNodeProps />
-                <MenuAsidCreateNodeChildProps />
-                <MenuSidCreateNodeParentRels
+                <SidebarCardSidCreateNodeParentNode v-if="selectedGraph != 'Admin'" />
+                <SidebarCardSystemCreateLabels v-if="selectedGraph != 'Admin'" />
+                <SidebarCardAsidCreateNodeLabels v-if="selectedGraph == 'Admin'" />
+                <SidebarCardAsidCreateNodeProps />
+                <SidebarCardAsidCreateNodeChildProps />
+                <SidebarCardSidCreateNodeParentRels
                   v-if="selectedGraph != 'Admin' && selectedGraph != 'System'"
                 />
               </v-sheet>
@@ -58,12 +58,12 @@
                 <v-list-item>
                   <v-list-item-subtitle>(Ny)</v-list-item-subtitle>
                 </v-list-item>
-                <MenuSidCreateNodeParentNode v-if="selectedGraph != 'Admin'" />
-                <MenuSystemCreateLabels v-if="selectedGraph != 'Admin'" />
-                <MenuAsidCreateNodeLabels v-if="selectedGraph == 'Admin'" />
-                <MenuAsidCreateNodeProps />
-                <MenuAsidCreateShowRels v-if="selectedGraph != 'Admin'" />
-                <MenuAsidCreateNodeChildProps />
+                <SidebarCardSidCreateNodeParentNode v-if="selectedGraph != 'Admin'" />
+                <SidebarCardSystemCreateLabels v-if="selectedGraph != 'Admin'" />
+                <SidebarCardAsidCreateNodeLabels v-if="selectedGraph == 'Admin'" />
+                <SidebarCardAsidCreateNodeProps />
+                <SidebarCardAsidCreateShowRels v-if="selectedGraph != 'Admin'" />
+                <SidebarCardAsidCreateNodeChildProps />
               </v-sheet>
             </div>
 
@@ -95,21 +95,21 @@
 
 <script>
 import { mapState } from "vuex";
-import MenuCardNodeActive from "./MenuCardNodeActive";
-import MenuCardNodeSecondActive from "./MenuCardNodeSecondActive";
-import MenuCardNodeNotActive from "./MenuCardNodeNotActive";
+import SidebarCardVShowNodeActive from "./SidebarCardVShowNodeActive";
+import SidebarCardVShowNodeSecondActive from "./SidebarCardVShowNodeSecondActive";
+import SidebarCardVShowNodeNotActive from "./SidebarCardVShowNodeNotActive";
 
-// import MenuCardAdminConfigCreateNode from "./MenuCardAdminConfigCreateNode";
-import MenuCardAsidRel from "./MenuCardAsidRel";
-import MenuAsidCreateShowRels from "./MenuAsidCreateShowRels";
+// import SidebarCardAdminConfigCreateNode from "./SidebarCardAdminConfigCreateNode";
+import SidebarCardAsidRel from "./SidebarCardAsidRel";
+import SidebarCardAsidCreateShowRels from "./SidebarCardAsidCreateShowRels";
 
-import MenuAsidCreateNodeLabels from "./MenuAsidCreateNodeLabels";
-import MenuSystemCreateLabels from "./MenuSystemCreateLabels";
+import SidebarCardAsidCreateNodeLabels from "./SidebarCardAsidCreateNodeLabels";
+import SidebarCardSystemCreateLabels from "./SidebarCardSystemCreateLabels";
 
-import MenuAsidCreateNodeProps from "./MenuAsidCreateNodeProps";
-import MenuAsidCreateNodeChildProps from "./MenuAsidCreateNodeChildProps";
-import MenuSidCreateNodeParentRels from "./MenuSidCreateNodeParentRels";
-import MenuSidCreateNodeParentNode from "./MenuSidCreateNodeParentNode";
+import SidebarCardAsidCreateNodeProps from "./SidebarCardAsidCreateNodeProps";
+import SidebarCardAsidCreateNodeChildProps from "./SidebarCardAsidCreateNodeChildProps";
+import SidebarCardSidCreateNodeParentRels from "./SidebarCardSidCreateNodeParentRels";
+import SidebarCardSidCreateNodeParentNode from "./SidebarCardSidCreateNodeParentNode";
 
 export default {
   watch: {
@@ -140,18 +140,18 @@ export default {
   },
   props: ["secondAct"],
   components: {
-    MenuCardNodeActive,
-    MenuCardNodeSecondActive,
-    // MenuCardAdminConfigCreateNode,
-    MenuCardAsidRel,
-    MenuCardNodeNotActive,
-    MenuAsidCreateNodeLabels,
-    MenuAsidCreateNodeProps,
-    MenuAsidCreateNodeChildProps,
-    MenuSidCreateNodeParentRels,
-    MenuSidCreateNodeParentNode,
-    MenuAsidCreateShowRels,
-    MenuSystemCreateLabels
+    SidebarCardVShowNodeActive,
+    SidebarCardVShowNodeSecondActive,
+    // SidebarCardAdminConfigCreateNode,
+    SidebarCardAsidRel,
+    SidebarCardVShowNodeNotActive,
+    SidebarCardAsidCreateNodeLabels,
+    SidebarCardAsidCreateNodeProps,
+    SidebarCardAsidCreateNodeChildProps,
+    SidebarCardSidCreateNodeParentRels,
+    SidebarCardSidCreateNodeParentNode,
+    SidebarCardAsidCreateShowRels,
+    SidebarCardSystemCreateLabels
   },
   data() {
     return {

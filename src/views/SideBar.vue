@@ -8,35 +8,8 @@
     </v-list-item>
     <v-divider></v-divider>
 
-    <MenuItems :getMenuItem="getMenuItem" />
-
-    <div>
-      <!-- Configmodell -->
-      <div
-        v-if="activeObj.title !=null && !objCreate.status && !mini && selectedGraph == 'Config' "
-      >
-        <MenuConfigShow />
-      </div>
-      <div
-        v-else-if="objCreate.status && !mini && selectedGraph == 'Config' && selectConfigType == 'Config'"
-      >
-        <MenuConfigCreate :secondAct="secondAct" />
-      </div>
-      <div
-        v-else-if="objCreate.status && !mini && selectedGraph == 'Config' && (selectConfigType == 'AdminConfig' || selectConfigType == 'SystemConfig' || selectConfigType == 'InformationConfig' || selectConfigType == 'DataConfig')"
-      >
-        <MenuConfigAdminCreate :secondAct="secondAct" />
-      </div>
-
-      <div
-        v-else-if="activeObj.title !=null && !objCreate.status && !mini && selectedGraph != 'Config' "
-      >
-        <MenuAsidShow :secondAct="secondAct" />
-      </div>
-      <div v-else-if="objCreate.status && !mini && selectedGraph != 'Config'">
-        <MenuAsidCreate :secondAct="secondAct" />
-      </div>
-    </div>
+    <SidebarItems :getMenuItem="getMenuItem" />
+    <SidebarCard />
 
     <template v-slot:append>
       <div class="pa-2">
@@ -48,102 +21,20 @@
 
 <script>
 import { mapState } from "vuex";
-import MenuItems from "../components/menu/MenuItems";
-import MenuConfigShow from "../components/menu/MenuConfigShow";
-import MenuConfigCreate from "../components/menu/MenuConfigCreate";
-import MenuConfigAdminCreate from "../components/menu/MenuConfigAdminCreate";
-import MenuAsidShow from "../components/menu/MenuAsidShow";
-import MenuAsidCreate from "../components/menu/MenuAsidCreate";
+import SidebarItems from "../components/sidebar/SidebarItems";
+import SidebarCard from "../components/sidebar/SidebarCard";
+
 
 export default {
   name: "SideBar",
   components: {
-    // MenuConfig,
-    MenuItems,
-    MenuConfigShow,
-    MenuConfigCreate,
-    MenuConfigAdminCreate,
-    MenuAsidShow,
-    MenuAsidCreate
-  },
-  watch: {
-    activeObj: function() {
-      if (this.activeObj.title != null) {
-        this.mini = false;
-        // } else {
-        //   this.mini = true;
-      }
-      if (this.objCreate.status) {
-        // this.mini = false;
-        if (this.objCreate.type == "create to") {
-          this.objCreate.toggle = 1;
-        } else if (this.objCreate.type == "create from") {
-          this.objCreate.toggle = 0;
-        }
-      }
-    },
-    "$store.state.objCreate.type": function() {
-      if (this.objCreate.type == "create to") {
-        this.objCreate.toggle = 1;
-      } else if (this.objCreate.type == "create from") {
-        this.objCreate.toggle = 0;
-      }
-    },
-    "$store.state.setConfigConfigString": async function() {
-      this.secondAct = await this.$store.state.secondActiveObj.node.title;
-
-      if (this.$store.state.objCreate.type == "create rel") {
-        if (this.secondAct != null) {
-          this.$store.dispatch("getAdminConfigRels", {
-            from: this.$store.state.activeObj.title,
-            to: this.secondAct
-          });
-        }
-      }
-    },
-
-    "$store.state.secondActiveObj.node.title": function() {
-      if (this.$store.state.secondActiveObj.node.title == null) {
-        this.secondAct == null;
-      } else {
-        this.secondAct = this.$store.state.secondActiveObj.node.title;
-
-
-        if (this.$store.state.objCreate.type == "create rel") {
-          if (this.secondAct == null) {
-            this.$store.state.setConfigConfig = {};
-          } else {
-            this.$store.dispatch("getAdminConfigRels", {
-              from: this.$store.state.activeObj.title,
-              to: this.secondAct
-            });
-          }
-        }
-      }
-    },
-
-    successful: function() {
-      if (this.successful) {
-        this.mini = true;
-        this.$store.state.activeObj = {};
-        this.$store.state.objCreate = { status: false };
-        this.$store.state.successful = null;
-        this.$store.state.secondActiveObj = {
-          status: false,
-          node: { title: null }
-        };
-      }
-    },
-
-    deep: true
+    SidebarItems,
+    SidebarCard
   },
 
   data() {
     return {
       switch1: false,
-      secondAct: null,
-      selectedItem: 0,
-      showoOverlay: false,
       drawer: true,
       itemsConf: [
         { title: "Config", icon: "mdi-cog-outline" },
@@ -158,16 +49,25 @@ export default {
         { title: "Data", icon: "mdi-vector-polyline" }
       ],
       mini: true
-    };
+    }
   },
+    watch: {
+    activeObj: function() {
+      if (this.activeObj.title != null) {
+        this.mini = false;
+      }
+      if (this.objCreate.status) {
+        if (this.objCreate.type == "create to") {
+          this.objCreate.toggle = 1;
+        } else if (this.objCreate.type == "create from") {
+          this.objCreate.toggle = 0;
+        }
+      }
+    }
+    },
   computed: {
     ...mapState([
       "activeObj",
-      "objCreate",
-      "selectedGraph",
-      "successful",
-      "secondActiveObj",
-      "selectConfigType"
     ]),
     getMenuItem() {
       if (this.switch1) {
@@ -175,25 +75,6 @@ export default {
       } else {
         return this.items;
       }
-    }
-  },
-  methods: {
-    checkSelectedItem(item) {
-      this.selectedItem = this.items.indexOf(item);
-      this.$store.state.selectedGraph = item.title;
-    },
-
-    async deleteNode(node) {
-      let response = confirm(
-        `Är du säker på att du vill ta bort "${node.title}"?`
-      );
-
-      if (response) {
-        await this.$store.dispatch("deleteNode", node);
-      }
-    },
-    onClickChild(value) {
-      this.showoOverlay = value;
     }
   },
   mounted() {

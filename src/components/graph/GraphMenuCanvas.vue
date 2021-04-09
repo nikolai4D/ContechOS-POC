@@ -52,8 +52,6 @@ export default {
             }
           }
         );
-        this.$store.state.done = "true";
-        this.$store.state.done = "false";
       }
 
       if (
@@ -71,35 +69,11 @@ export default {
             }
           }
         );
-        this.$store.state.done = "true";
-        this.$store.state.done = "false";
       }
 
-      if (value == "update") {
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objEditingId = this.prep.id;
-        this.$store.state.objCreate = { status: false };
-      } else if (value == "create") {
+   if (value == "create") {
         this.$store.state.activeObj = this.prep;
         this.$store.state.objCreate = { status: true, type: "create" };
-      } else if (value == "create to") {
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objCreate = { status: true, type: "create to" };
-      } else if (value == "create from") {
-        if (
-          this.$store.state.selectedGraph != "Config" &&
-          this.$store.state.selectedGraph != "Admin"
-        ) {
-          await this.$store.dispatch("getSystemSub");
-        }
-
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objCreate = { status: true, type: "create from" };
-      } else if (value == "create rel") {
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objCreate = { status: true, type: "create rel" };
-        this.$store.state.secondActiveObj.status = true;
-        this.$store.dispatch("getSidRel", this.$store.state.activeObj.id);
       } else {
         this.$store.state.objCreate = { status: false };
       }
