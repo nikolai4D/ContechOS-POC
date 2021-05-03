@@ -92,11 +92,11 @@ export default {
           this.$store.state.selectedGraph != "Config" &&
           this.$store.state.selectedGraph != "Admin"
         ) {
+                  this.$store.state.activeObj = this.prep;
+        this.$store.state.objCreate = { status: true, type: "create from" };
           await this.$store.dispatch("getSystemSub");
         }
 
-        this.$store.state.activeObj = this.prep;
-        this.$store.state.objCreate = { status: true, type: "create from" };
       } else if (value == "create rel") {
         this.$store.state.activeObj = this.prep;
         this.$store.state.objCreate = { status: true, type: "create rel" };
