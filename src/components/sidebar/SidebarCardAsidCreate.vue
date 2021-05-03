@@ -18,6 +18,7 @@
               <h5>Välj en nod (den valda är en relation)</h5>
             </v-list-item>
           </div>
+
           <div v-else>
             <div v-if="objCreate.type == 'create rel' && secondAct == null">
               <SidebarCardVShowNodeNotActive :secondAct="secondAct" />
@@ -29,7 +30,10 @@
 
             <div v-else-if="objCreate.type == 'create to' || objCreate.type == 'create from'">
               <SidebarCardAsidRel v-if="objCreate.type == 'create to'" :relList="setConfigConfig" />
-              <SidebarCardAsidRel v-if="objCreate.type == 'create from'" :relList="setConfigConfig" />
+              <SidebarCardAsidRel
+                v-if="objCreate.type == 'create from'"
+                :relList="setConfigConfig"
+              />
 
               <v-sheet outlined dark rounded>
                 <v-list-item>
@@ -50,21 +54,7 @@
             <!-- Create new node only -->
 
             <div v-else-if="objCreate.type=='create'">
-              <div>
-                <h3>{{createString.new}}</h3>
-                <br />
-              </div>
-              <v-sheet outlined dark rounded>
-                <v-list-item>
-                  <v-list-item-subtitle>(Ny)</v-list-item-subtitle>
-                </v-list-item>
-                <SidebarCardSidCreateNodeParentNode v-if="selectedGraph != 'Admin'" />
-                <SidebarCardSystemCreateLabels v-if="selectedGraph != 'Admin'" />
-                <SidebarCardAsidCreateNodeLabels v-if="selectedGraph == 'Admin'" />
-                <SidebarCardAsidCreateNodeProps />
-                <SidebarCardAsidCreateShowRels v-if="selectedGraph != 'Admin'" />
-                <SidebarCardAsidCreateNodeChildProps />
-              </v-sheet>
+              <SidebarCardAsidCreateNode />
             </div>
 
             <v-list-item>
@@ -101,7 +91,7 @@ import SidebarCardVShowNodeNotActive from "./SidebarCardVShowNodeNotActive";
 
 // import SidebarCardAdminConfigCreateNode from "./SidebarCardAdminConfigCreateNode";
 import SidebarCardAsidRel from "./SidebarCardAsidRel";
-import SidebarCardAsidCreateShowRels from "./SidebarCardAsidCreateShowRels";
+import SidebarCardAsidCreateNode from "./SidebarCardAsidCreateNode";
 
 import SidebarCardAsidCreateNodeLabels from "./SidebarCardAsidCreateNodeLabels";
 import SidebarCardSystemCreateLabels from "./SidebarCardSystemCreateLabels";
@@ -150,8 +140,8 @@ export default {
     SidebarCardAsidCreateNodeChildProps,
     SidebarCardSidCreateNodeParentRels,
     SidebarCardSidCreateNodeParentNode,
-    SidebarCardAsidCreateShowRels,
-    SidebarCardSystemCreateLabels
+    SidebarCardSystemCreateLabels,
+    SidebarCardAsidCreateNode
   },
   data() {
     return {
@@ -229,9 +219,7 @@ export default {
           this.createObj.rel.from = this.activeObj.id;
           this.createObj.rel.to = this.secondActiveObj.node.id;
 
-          if (
-            this.$store.state.selectedGraph != "Config"
-          ) {
+          if (this.$store.state.selectedGraph != "Config") {
             this.createObj.rel.type = this.$store.state.propsToAdd.parentRel;
           }
           // if (
@@ -287,7 +275,6 @@ export default {
 
         // create node and rel
         else {
-
           if (this.objCreate.type == "create to") {
             this.createObj.node["labels"] = [
               this.$store.state.label,
@@ -333,9 +320,7 @@ export default {
                 "parentNodeId"
               ] = this.$store.state.propsToAdd.valueId;
             }
-                          this.createObj.rel[
-                "type"
-              ] = this.$store.state.propsToAdd.parentRel; 
+            this.createObj.rel["type"] = this.$store.state.propsToAdd.parentRel;
             this.createObj.node["childProps"] = this.$store.state.textFields;
             this.createObj["configNodeId"] = this.asid.root.node.configNodeId;
 
