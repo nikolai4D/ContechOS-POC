@@ -13,6 +13,7 @@
             <br />
             <SidebarCardVShowNodeActive />
           </div>
+
           <div v-if="activeObj.source">
             <v-list-item>
               <h5>Välj en nod (den valda är en relation)</h5>
@@ -36,14 +37,7 @@
               />
 
               <v-sheet outlined dark rounded>
-                <v-list-item>
-                  <v-list-item-subtitle>(Ny)</v-list-item-subtitle>
-                </v-list-item>
-                <SidebarCardSidCreateNodeParentNode v-if="selectedGraph != 'Admin'" />
-                <SidebarCardSystemCreateLabels v-if="selectedGraph != 'Admin'" />
-                <SidebarCardAsidCreateNodeLabels v-if="selectedGraph == 'Admin'" />
-                <SidebarCardAsidCreateNodeProps />
-                <SidebarCardAsidCreateNodeChildProps />
+                <SidebarCardAsidCreateNode />
                 <SidebarCardSidCreateNodeParentRels
                   v-if="selectedGraph != 'Admin' && selectedGraph != 'System'"
                 />
@@ -54,7 +48,11 @@
             <!-- Create new node only -->
 
             <div v-else-if="objCreate.type=='create'">
-              <SidebarCardAsidCreateNode />
+                <h3>{{createString.new}}</h3>
+                <br />
+              <v-sheet outlined dark rounded>
+                <SidebarCardAsidCreateNode />
+              </v-sheet>
             </div>
 
             <v-list-item>
@@ -92,14 +90,7 @@ import SidebarCardVShowNodeNotActive from "./SidebarCardVShowNodeNotActive";
 // import SidebarCardAdminConfigCreateNode from "./SidebarCardAdminConfigCreateNode";
 import SidebarCardAsidRel from "./SidebarCardAsidRel";
 import SidebarCardAsidCreateNode from "./SidebarCardAsidCreateNode";
-
-import SidebarCardAsidCreateNodeLabels from "./SidebarCardAsidCreateNodeLabels";
-import SidebarCardSystemCreateLabels from "./SidebarCardSystemCreateLabels";
-
-import SidebarCardAsidCreateNodeProps from "./SidebarCardAsidCreateNodeProps";
-import SidebarCardAsidCreateNodeChildProps from "./SidebarCardAsidCreateNodeChildProps";
 import SidebarCardSidCreateNodeParentRels from "./SidebarCardSidCreateNodeParentRels";
-import SidebarCardSidCreateNodeParentNode from "./SidebarCardSidCreateNodeParentNode";
 
 export default {
   watch: {
@@ -135,12 +126,7 @@ export default {
     // SidebarCardAdminConfigCreateNode,
     SidebarCardAsidRel,
     SidebarCardVShowNodeNotActive,
-    SidebarCardAsidCreateNodeLabels,
-    SidebarCardAsidCreateNodeProps,
-    SidebarCardAsidCreateNodeChildProps,
     SidebarCardSidCreateNodeParentRels,
-    SidebarCardSidCreateNodeParentNode,
-    SidebarCardSystemCreateLabels,
     SidebarCardAsidCreateNode
   },
   data() {
@@ -190,22 +176,13 @@ export default {
     await this.$store.dispatch("getConfigConfigRel");
   },
   methods: {
-    // async getNodeValues() {
-    //   this.$store.createObj = this.tempCreateObj;
-    //   await this.$store.dispatch(
-    //     "getConfigConfigNodes",
-    //     this.tempCreateObj.rel.type.id
-    //   );
-    // },
+
     cancel() {
       this.$store.state.successful = null;
     },
     validate() {
       if (this.$refs.form.validate()) {
         if (this.objCreate.type == "create rel") {
-          if (this.createObj.rel.type == null) {
-            // this.createObj.rel.type.value = this.createObj.rel.type.valueField;
-          }
           // create rel
           if (
             this.$store.state.selectedGraph != "Config" &&
@@ -222,14 +199,9 @@ export default {
           if (this.$store.state.selectedGraph != "Config") {
             this.createObj.rel.type = this.$store.state.propsToAdd.parentRel;
           }
-          // if (
-          //   this.$store.state.selectedGraph == "Admin"
-          // ) {
+      
           this.$store.dispatch("createAsidRel", this.createObj.rel);
-          // }
-
-          // this.$store.dispatch("createAsidRel", this.createObj.rel);
-
+      
           this.$store.state.successful = "...";
           this.button.disabled = true;
           this.$store.state.setConfigConfig = {};
@@ -257,8 +229,6 @@ export default {
           }
           this.createObj.node["childProps"] = this.$store.state.textFields;
           this.createObj["configNodeId"] = this.asid.root.node.configNodeId;
-
-          // console.log(this.createObj, "createObj");
           if (
             this.$store.state.selectedGraph != "Config" &&
             this.$store.state.selectedGraph != "Admin"
@@ -269,7 +239,6 @@ export default {
           }
           this.button.disabled = true;
           this.$store.state.successful = "...";
-          // this.$store.dispatch("readNodes", "System");
           this.activeObj = {};
         }
 
@@ -333,21 +302,15 @@ export default {
             ];
 
             this.objCreate.toggle = 0;
-            // newObject.direction = "to";
-            // newObject.node.id = this.activeObj.id;
             if (this.selectedGraph == "Admin") {
               this.$store.dispatch("createSubNodeRel", this.createObj);
-              console.log("create from", this.createObj);
             } else if (
               this.selectedGraph == "Information" ||
               this.selectedGraph == "Data"
             ) {
               this.$store.dispatch("createInfoDataSubNodeRel", this.createObj);
-
-              console.log("create from, info data", this.createObj);
             } else {
               this.$store.dispatch("createSystemSubNodeRel", this.createObj);
-              console.log("create from", this.createObj);
             }
 
             this.button.disabled = true;

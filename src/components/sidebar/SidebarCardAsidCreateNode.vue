@@ -1,12 +1,5 @@
 <template>
-  <v-card>
-    <v-card-text>
       <v-list>
-              <div>
-                <h3>{{createString.new}}</h3>
-                <br />
-              </div>
-              <v-sheet outlined dark rounded>
                 <v-list-item>
                   <v-list-item-subtitle>(Ny)</v-list-item-subtitle>
                 </v-list-item>
@@ -16,10 +9,7 @@
                 <SidebarCardAsidCreateNodeProps />
                 <SidebarCardAsidCreateShowRels v-if="selectedGraph != 'Admin'" />
                 <SidebarCardAsidCreateNodeChildProps />
-              </v-sheet>
       </v-list>
-    </v-card-text>
-  </v-card>
 </template>
 
 <script>
