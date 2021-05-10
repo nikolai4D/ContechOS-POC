@@ -3,7 +3,11 @@ import Vuex from "vuex";
 import axios from "axios";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import { COLORS }  from "../utils/assets/colors";
+import { COLORS } from "../utils/assets/colors";
+import { USER, USER_TOKEN } from "./queries";
+import { ADD_TOKEN } from "./mutations";
+
+import { apiCall } from "./api-helper";
 
 Vue.use(Vuex);
 
@@ -41,7 +45,7 @@ export default new Vuex.Store({
     propsToShow: {},
     propsToAdd: {},
     relsInfoData: {},
-    validNodes:[],
+    validNodes: [],
     groups: [],
     colors: COLORS,
   },
@@ -52,6 +56,7 @@ export default new Vuex.Store({
       window.localStorage.userRegSent = userRegSent;
     },
     SET_CURRENT_USER(state, user) {
+      console.log(user, "store")
       state.currentUser = user;
       window.localStorage.currentUser = JSON.stringify(user);
     },
@@ -216,37 +221,21 @@ export default new Vuex.Store({
 
     async loginUser({ commit }, user) {
       try {
-        const optionsLogin = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: {
-            email: user.email,
-          },
-          url: process.env.VUE_APP_APIURL + "login",
-        };
-        let apiResponse = await axios(optionsLogin);
-        if (await bcrypt.compare(user.password, apiResponse.data.data)) {
+        let findUser = await apiCall(USER(user.email))
+        if (await bcrypt.compare(user.password, findUser.users[0].password)) {
           let token = crypto.randomBytes(64).toString("hex");
-          const optionsAuth = {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            data: {
-              email: user.email,
-              token,
-            },
-            url: process.env.VUE_APP_APIURL + "loginAuth",
-          };
-          let apiResponse = await axios(optionsAuth);
-
-          commit("SET_CURRENT_USER", apiResponse.data.data);
-          return apiResponse.data.message;
+          let response = await apiCall(ADD_TOKEN(user.email, token))
+          let userLoggedin = response.updateUsers.users[0]
+          commit("SET_CURRENT_USER", userLoggedin);
+              return userLoggedin;
         }
-        return "Wrong password";
-      } catch (error) {
+          return "Wrong password";
+        } catch (error) {
         console.error(error.response.data.message);
         return error.response.data.message;
       }
-    },
+    }
+    ,
 
     async loadCurrentUser({ commit }) {
       let user = JSON.parse(window.localStorage.currentUser);
@@ -278,19 +267,11 @@ export default new Vuex.Store({
         return false;
       }
       try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: {
-            token: user.token,
-          },
-          url: process.env.VUE_APP_APIURL + "tokenVal",
-        };
+        let apiResponse = await apiCall(USER_TOKEN(user.token))
+        let res = apiResponse.users.length > 0 ? true : false;
+        commit("SET_TOKEN_VALIDATION", res);
 
-        let apiResponse = await axios(options);
-        commit("SET_TOKEN_VALIDATION", apiResponse.data);
-
-        return apiResponse.data;
+        return res;
       } catch (error) {
         console.error(error);
       }

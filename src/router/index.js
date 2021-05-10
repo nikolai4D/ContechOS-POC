@@ -23,6 +23,7 @@ const routes = [
     name: "home",
     component: Home,
     async beforeEnter(to, from, next) {
+      console.log(await store.dispatch("tokenValidation", store.state.currentUser), "teeeest")
       if (
         store.state.currentUser.token != null &&
         (await store.dispatch("tokenValidation", store.state.currentUser))
