@@ -4,8 +4,8 @@ import axios from "axios";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { COLORS } from "../utils/assets/colors";
-import { USER, USER_TOKEN } from "./queries";
-import { ADD_TOKEN } from "./mutations";
+import { USER, USER_BY_TOKEN  } from "./queries";
+import { ADD_TOKEN, REMOVE_TOKEN } from "./mutations";
 
 import { apiCall } from "./api-helper";
 
@@ -234,8 +234,7 @@ export default new Vuex.Store({
         console.error(error.response.data.message);
         return error.response.data.message;
       }
-    }
-    ,
+    },
 
     async loadCurrentUser({ commit }) {
       let user = JSON.parse(window.localStorage.currentUser);
@@ -244,19 +243,10 @@ export default new Vuex.Store({
 
     async logoutUser({ commit }, user) {
       try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: {
-            token: user.token,
-          },
-          url: process.env.VUE_APP_APIURL + "logout",
-        };
-        let apiResponse = await axios(options);
-
+        let apiResponse = await apiCall(REMOVE_TOKEN(user.token))
         commit("LOGOUT_USER");
 
-        return apiResponse.data.message;
+        return apiResponse.data;
       } catch (error) {
         console.error(error.response.data.message);
       }
@@ -267,13 +257,12 @@ export default new Vuex.Store({
         return false;
       }
       try {
-        let apiResponse = await apiCall(USER_TOKEN(user.token))
+        let apiResponse = await apiCall(USER_BY_TOKEN(user.token))
         let res = apiResponse.users.length > 0 ? true : false;
         commit("SET_TOKEN_VALIDATION", res);
-
         return res;
       } catch (error) {
-        console.error(error);
+        console.error(error.response.data.message);
       }
     },
 

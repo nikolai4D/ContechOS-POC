@@ -13,3 +13,17 @@ export const ADD_TOKEN = (email, token) => {
 `
 }
 
+export const REMOVE_TOKEN = (token) => {
+    return `mutation {
+          updateUsers(where: {token:"${token}"}, update: {token : null})
+          {
+            users 
+            {
+              email
+              name
+            }
+          }
+        }
+`
+}
+

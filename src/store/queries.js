@@ -7,7 +7,7 @@ export const USER = (email) => {
 }`
 }
 
-export const USER_TOKEN = (token) => {
+export const USER_BY_TOKEN = (token) => {
     return `{ 
 	users(where: {token:"${token}"})
   {
