@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { COLORS } from "../utils/assets/colors";
 import { USER, USER_BY_TOKEN  } from "./queries";
-import { ADD_TOKEN, REMOVE_TOKEN } from "./mutations";
+import { REGISTER_USER, ADD_TOKEN, REMOVE_TOKEN } from "./mutations";
 
 import { apiCall } from "./api-helper";
 
@@ -199,19 +199,10 @@ export default new Vuex.Store({
 
   actions: {
     async registerUser({ commit }, user) {
-      const options = {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        data: {
-          email: user.email,
-          name: user.name,
-          password: await bcrypt.hash(user.password, 10),
-        },
-        url: process.env.VUE_APP_APIURL + "register",
-      };
-
+      let {email, name, password } = user;
       try {
-        await axios(options);
+       await apiCall(REGISTER_USER(email, name, await bcrypt.hash(password, 10)))
+
         commit("SET_USER_REG_SENT", true);
       } catch (error) {
         console.error(error.response.data.message);
@@ -236,20 +227,19 @@ export default new Vuex.Store({
       }
     },
 
-    async loadCurrentUser({ commit }) {
-      let user = JSON.parse(window.localStorage.currentUser);
-      commit("SET_CURRENT_USER", user);
-    },
-
     async logoutUser({ commit }, user) {
       try {
         let apiResponse = await apiCall(REMOVE_TOKEN(user.token))
         commit("LOGOUT_USER");
-
         return apiResponse.data;
       } catch (error) {
         console.error(error.response.data.message);
       }
+    },
+
+    async loadCurrentUser({ commit }) {
+      let user = JSON.parse(window.localStorage.currentUser);
+      commit("SET_CURRENT_USER", user);
     },
 
     async tokenValidation({ commit }, user) {
