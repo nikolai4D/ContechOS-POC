@@ -16,4 +16,6 @@ const optionsLogin = {
 }
 
 
-
+export const getType = (obj) => {
+  return `${obj.charAt(0).toLowerCase()}${obj.slice(1)}s` // From Config to configs, AdminConfig to adminConfigs etc.
+}

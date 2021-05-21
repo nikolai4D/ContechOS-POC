@@ -9,7 +9,7 @@ import { USER, USER_BY_TOKEN, CONFIGS_NODES_RELS } from "./queries";
 
 import { REGISTER_USER, ADD_TOKEN, REMOVE_TOKEN } from "./mutations";
 
-import { apiCall } from "./api-helper";
+import { apiCall, getType } from "./helpers";
 
 Vue.use(Vuex);
 
@@ -58,7 +58,6 @@ export default new Vuex.Store({
       window.localStorage.userRegSent = userRegSent;
     },
     SET_CURRENT_USER(state, user) {
-      console.log(user, "store")
       state.currentUser = user;
       window.localStorage.currentUser = JSON.stringify(user);
     },
@@ -334,64 +333,19 @@ export default new Vuex.Store({
     },
 
     async readConfig({ commit }, configType) {
-      let type = `${configType.charAt(0).toLowerCase()}${configType.slice(1)}s` // From Config to configs, AdminConfig to adminConfigs etc.
-      try{
-        console.log(CONFIGS_NODES_RELS(type, configType))
-
+      let type = getType(configType)                                              // From Config to configs, AdminConfig to adminConfigs etc.
+      try {
         let apiResponse = await apiCall(CONFIGS_NODES_RELS(type, configType))
-          
+        let { groupsConfig } = apiResponse;
 
+        await apiResponse[type].map((item) => {                                   //Assigning group (for color)
+          item["group"] = groupsConfig.indexOf(item.labels) + 1
+        })
+        this.state.groups = groupsConfig
+        let objectToState = { nodes: apiResponse[type], rels: apiResponse[`rels${configType}`] }
 
-      // try {
-      //   const options = {
-      //     method: "POST",
-      //     headers: { "content-type": "application/json" },
-      //     data: {
-      //       configType,
-      //     },
-      //     url: process.env.VUE_APP_APIURL + "readConfig",
-      //   };
-
-      //   let apiResponse = await axios(options);
-      //   let anArray = [];
-      //   let groups = [];
-      //   this.state.groups = [];
-
-      //   if (configType) {
-      //     await apiResponse.data.nodes.map((node) => {
-      //       node.labels.map((obj) => {
-      //         if (obj != configType) {
-      //           let group = {};
-
-      //           if (!groups.includes(obj)) {
-      //             groups.push(obj);
-      //             group = groups.length;
-      //           } else {
-      //             group = groups.indexOf(obj) + 1;
-      //           }
-      //           anArray.push({
-      //             id: node.id,
-      //             labels: node.labels,
-      //             props: node.props,
-      //             title: obj,
-      //             group,
-      //           });
-      //         }
-      //       });
-      //     });
-
-          // let resultObject = {
-          //   configType,
-          //   nodes: anArray,
-          //   rels: apiResponse.data.rels,
-          //   groups: groups.length,
-          // };
-
-          // this.state.groups = groups;
-
-          commit("SET_NODES_CONFIG", {nodes:apiResponse.configs, rels: apiResponse.relsConfig});
-          commit("SET_RELS_CONFIG", {nodes:apiResponse.configs, rels: apiResponse.relsConfig});
-        // }
+        commit("SET_NODES_CONFIG", objectToState);
+        commit("SET_RELS_CONFIG", objectToState);
       } catch (error) {
         console.error(error.response.data.message);
       }

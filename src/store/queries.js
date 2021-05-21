@@ -19,8 +19,8 @@ export const USER_BY_TOKEN = (token) => {
 export const CONFIGS_NODES_RELS = (type, configType) => {
     return `{
     ${type} { 
-          labels
-          title
+          labels(label: "${configType}")
+          title(label: "${configType}")
           id
           created
           updated
@@ -28,5 +28,6 @@ export const CONFIGS_NODES_RELS = (type, configType) => {
           value
         }
       rels${configType}
+      groups${configType}
   }`
 }
