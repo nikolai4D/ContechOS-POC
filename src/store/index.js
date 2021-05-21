@@ -9,7 +9,7 @@ import { USER, USER_BY_TOKEN, CONFIGS_NODES_RELS } from "./queries";
 
 import { REGISTER_USER, ADD_TOKEN, REMOVE_TOKEN } from "./mutations";
 
-import { apiCall, getType } from "./helpers";
+import { apiCall, getType, assignGroup } from "./helpers";
 
 Vue.use(Vuex);
 
@@ -333,19 +333,20 @@ export default new Vuex.Store({
     },
 
     async readConfig({ commit }, configType) {
-      let type = getType(configType)                                              // From Config to configs, AdminConfig to adminConfigs etc.
+      const type = getType(configType)                                              // From Config to configs, AdminConfig to adminConfigs etc.
+
       try {
-        let apiResponse = await apiCall(CONFIGS_NODES_RELS(type, configType))
-        let { groupsConfig } = apiResponse;
+        const apiResponse = await apiCall(CONFIGS_NODES_RELS(type, configType))
+        const nodes = apiResponse[type]
+        const rels = apiResponse[`rels${configType}`]
+        const groups = apiResponse[`groups${configType}`]
 
-        await apiResponse[type].map((item) => {                                   //Assigning group (for color)
-          item["group"] = groupsConfig.indexOf(item.labels) + 1
-        })
-        this.state.groups = groupsConfig
-        let objectToState = { nodes: apiResponse[type], rels: apiResponse[`rels${configType}`] }
+        assignGroup(nodes, groups)
+        this.state.groups = groups
+  
 
-        commit("SET_NODES_CONFIG", objectToState);
-        commit("SET_RELS_CONFIG", objectToState);
+        commit("SET_NODES_CONFIG", { nodes, rels });
+        commit("SET_RELS_CONFIG", { nodes, rels });
       } catch (error) {
         console.error(error.response.data.message);
       }

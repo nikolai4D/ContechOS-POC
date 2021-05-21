@@ -19,3 +19,9 @@ const optionsLogin = {
 export const getType = (obj) => {
   return `${obj.charAt(0).toLowerCase()}${obj.slice(1)}s` // From Config to configs, AdminConfig to adminConfigs etc.
 }
+
+export const assignGroup = (nodes, groups) => {
+  return nodes.map((item) => {                                   //Assigning group (for color)
+    item["group"] = groups.indexOf(item.labels) + 1
+  })
+}
