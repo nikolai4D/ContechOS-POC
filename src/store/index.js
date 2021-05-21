@@ -4,7 +4,9 @@ import axios from "axios";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { COLORS } from "../utils/assets/colors";
-import { USER, USER_BY_TOKEN  } from "./queries";
+import { USER, USER_BY_TOKEN, CONFIGS_NODES_RELS } from "./queries";
+// import { USER, USER_BY_TOKEN, CONFIGS_NODES_RELS2  } from "./queries";
+
 import { REGISTER_USER, ADD_TOKEN, REMOVE_TOKEN } from "./mutations";
 
 import { apiCall } from "./api-helper";
@@ -199,10 +201,9 @@ export default new Vuex.Store({
 
   actions: {
     async registerUser({ commit }, user) {
-      let {email, name, password } = user;
+      let { email, name, password } = user;
       try {
-       await apiCall(REGISTER_USER(email, name, await bcrypt.hash(password, 10)))
-
+        await apiCall(REGISTER_USER(email, name, await bcrypt.hash(password, 10)))
         commit("SET_USER_REG_SENT", true);
       } catch (error) {
         console.error(error.response.data.message);
@@ -218,10 +219,10 @@ export default new Vuex.Store({
           let response = await apiCall(ADD_TOKEN(user.email, token))
           let userLoggedin = response.updateUsers.users[0]
           commit("SET_CURRENT_USER", userLoggedin);
-              return userLoggedin;
+          return userLoggedin;
         }
-          return "Wrong password";
-        } catch (error) {
+        return "Wrong password";
+      } catch (error) {
         console.error(error.response.data.message);
         return error.response.data.message;
       }
@@ -333,56 +334,64 @@ export default new Vuex.Store({
     },
 
     async readConfig({ commit }, configType) {
-      try {
-        const options = {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          data: {
-            configType,
-          },
-          url: process.env.VUE_APP_APIURL + "readConfig",
-        };
+      let type = `${configType.charAt(0).toLowerCase()}${configType.slice(1)}s` // From Config to configs, AdminConfig to adminConfigs etc.
+      try{
+        console.log(CONFIGS_NODES_RELS(type, configType))
 
-        let apiResponse = await axios(options);
-        let anArray = [];
-        let groups = [];
-        this.state.groups = [];
+        let apiResponse = await apiCall(CONFIGS_NODES_RELS(type, configType))
+          
 
-        if (configType) {
-          await apiResponse.data.nodes.map((node) => {
-            node.labels.map((obj) => {
-              if (obj != configType) {
-                let group = {};
 
-                if (!groups.includes(obj)) {
-                  groups.push(obj);
-                  group = groups.length;
-                } else {
-                  group = groups.indexOf(obj) + 1;
-                }
-                anArray.push({
-                  id: node.id,
-                  labels: node.labels,
-                  props: node.props,
-                  title: obj,
-                  group,
-                });
-              }
-            });
-          });
+      // try {
+      //   const options = {
+      //     method: "POST",
+      //     headers: { "content-type": "application/json" },
+      //     data: {
+      //       configType,
+      //     },
+      //     url: process.env.VUE_APP_APIURL + "readConfig",
+      //   };
 
-          let resultObject = {
-            configType,
-            nodes: anArray,
-            rels: apiResponse.data.rels,
-            groups: groups.length,
-          };
+      //   let apiResponse = await axios(options);
+      //   let anArray = [];
+      //   let groups = [];
+      //   this.state.groups = [];
 
-          this.state.groups = groups;
+      //   if (configType) {
+      //     await apiResponse.data.nodes.map((node) => {
+      //       node.labels.map((obj) => {
+      //         if (obj != configType) {
+      //           let group = {};
 
-          commit("SET_NODES_CONFIG", resultObject);
-          commit("SET_RELS_CONFIG", resultObject);
-        }
+      //           if (!groups.includes(obj)) {
+      //             groups.push(obj);
+      //             group = groups.length;
+      //           } else {
+      //             group = groups.indexOf(obj) + 1;
+      //           }
+      //           anArray.push({
+      //             id: node.id,
+      //             labels: node.labels,
+      //             props: node.props,
+      //             title: obj,
+      //             group,
+      //           });
+      //         }
+      //       });
+      //     });
+
+          // let resultObject = {
+          //   configType,
+          //   nodes: anArray,
+          //   rels: apiResponse.data.rels,
+          //   groups: groups.length,
+          // };
+
+          // this.state.groups = groups;
+
+          commit("SET_NODES_CONFIG", {nodes:apiResponse.configs, rels: apiResponse.relsConfig});
+          commit("SET_RELS_CONFIG", {nodes:apiResponse.configs, rels: apiResponse.relsConfig});
+        // }
       } catch (error) {
         console.error(error.response.data.message);
       }

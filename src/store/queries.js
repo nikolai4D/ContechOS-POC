@@ -16,3 +16,17 @@ export const USER_BY_TOKEN = (token) => {
 }`
 }
 
+export const CONFIGS_NODES_RELS = (type, configType) => {
+    return `{
+    ${type} { 
+          labels
+          title
+          id
+          created
+          updated
+          key
+          value
+        }
+      rels${configType}
+  }`
+}

@@ -24,6 +24,7 @@
             <div v-if="objCreate.type == 'create rel' && secondAct == null">
               <SidebarCardVShowNodeNotActive :secondAct="secondAct" />
             </div>
+            
             <div v-else-if="objCreate.type == 'create rel' && secondAct != null">
               <SidebarCardAsidRel :relList="setConfigConfig" :secondAct="secondAct" />
               <SidebarCardVShowNodeSecondActive :secondAct="secondAct" />
