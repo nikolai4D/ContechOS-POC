@@ -34,6 +34,11 @@ The levels are:
 
 \+ Config has levels in of itself as well>
 
+### Setup Information
+- Neo4j 
+  - Apoc: <a href="https://neo4j.com/developer/neo4j-apoc/" target="_blank">Install the plugin Apoc  (Neo4j Desktop)</a>
+  - Make sure to "Enable multi statement query editor" in Browser Settings in Neo4j Browser when copy-pasting the content from <a href="https://github.com/nikolai4D/ContechOS-server/blob/main/db/seed.md" target="_blank">seed.md</a> to your Neo4j db.
+
 ### Built With
 
 - <a href="https://vuejs.org/" target="_blank">Vue.js</a>  \- Framework for building the front-end of application
